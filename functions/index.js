@@ -1,4 +1,4 @@
-const cors = require('cors')();
+const cors = require('cors')({ origin: true });
 const functions = require('firebase-functions');
 const admin = require('firbase-admin');
 
@@ -7,15 +7,20 @@ admin.initializeApp(firebase.config().firebase);
 const validateFirebaseIdToken = (req, res, next) => {
   cors(req, res, () => {
     if (req.headers.authorization) {
-      const idToken = req.headers.authorization.split("Bearer ")[1];
-      admin.auth().verifyIdToken(idToken).then(decodedUser => {
-        req.user = decodedUser;
-        next();
-      }).catch(err => {
-        res.status(403).send('Unauthorized');
-      });
+      try {
+        const idToken = req.headers.authorization.split("Bearer ")[1];
+        admin.auth().verifyIdToken(idToken).then(decodedUser => {
+          req.user = decodedUser;
+          next();
+        }).catch(err => {
+          res.status(403).send();
+        });
+      } catch (error) {
+        console.error(error);
+        res.status(401).send();
+      }
     } else {
-      res.status(403).send('Unauthorized');
+      res.status(403).send();
     }
   });
 };
