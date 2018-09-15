@@ -37,12 +37,12 @@ export default class extends Component {
   }
 
   fetchTimeline = (page = 0) => {
-    axios.get('', {
+    axios.get('http://localhost:5000/gittogether-6f7ce/us-central1/getTimeline', {
       headers: {
         authorization: `Bearer ${this.state.idToken}`
       }
     }).then(res => {
-
+      console.log(res);
     }).catch(error => {
       this.setState({ error });
     });

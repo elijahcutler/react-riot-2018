@@ -1,5 +1,5 @@
 const functions = require('firebase-functions');
-const admin = require('firbase-admin');
+const admin = require('firebase-admin');
 const cors = require('cors')({ origin: true });
 
 admin.initializeApp(functions.config().firebase);
@@ -8,7 +8,7 @@ const validateFirebaseIdToken = (req, res, next) => {
   cors(req, res, () => {
     if (req.headers.authorization) {
       try {
-        const idToken = req.headers.authorization.split("Bearer ")[1];
+        const idToken = req.headers.authorization.split('Bearer ')[1];
         admin.auth().verifyIdToken(idToken).then(decodedUser => {
           req.user = decodedUser;
           next();
@@ -26,7 +26,7 @@ const validateFirebaseIdToken = (req, res, next) => {
 };
 
 exports.getTimeline = functions.https.onRequest((req, res) => {
-  validateFirebaseIdToken((req, res) => {
+  validateFirebaseIdToken(req, res, () => {
     firebase.database.ref(`users/${req.user.uid}/following`).once('value', snapshot => {
       let following = [];
       let events = [];
