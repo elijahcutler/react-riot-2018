@@ -7,6 +7,7 @@ import {
 import logo from './logo.svg';
 import firebase from './Components/firebase';
 import Home from './Components/Home';
+import Login from './Components/Login';
 import {PublicRoute, PrivateRoute} from './Components/Routes';
 
 class App extends Component {
@@ -21,7 +22,12 @@ class App extends Component {
               exact
               path="/"
               component={props => <Home />}
-            />
+          />
+          <PublicRoute
+              exact
+              path="/login"
+              component={props => <Login />}
+          />
           </Switch>
         </div>
       </Router>
