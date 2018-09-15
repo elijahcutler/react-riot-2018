@@ -3,9 +3,11 @@ import {TimelineEvent} from 'react-event-timeline';
 
 export default class extends Component {
   renderIcon = () => {
-    if (this.props.profileImageURL) {
+    let altRegEx = /[a-z]|\d|\s/g;
+    if (this.props.photoURL) {
       return <img
-                src={this.props.profileImageURL}
+                src={this.props.photoURL}
+                alt={this.props.username.replace(altRegEx, '')}
                 style={{
                   width: '32px',
                   height: '32px',
