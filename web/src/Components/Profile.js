@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { withRouter } from "react-router-dom";
 import firebase from './firebase';
 
-export default class extends Component {
+class Profile extends Component {
   state = {
     user: null
   }
@@ -39,3 +40,5 @@ export default class extends Component {
     );
   }
 }
+
+export default withRouter(Profile);
