@@ -66,7 +66,7 @@ class Navbar extends Component {
               {this.state.authenticated === true
                 ?
                 <ul className="navbar-nav mr-auto">
-                  <li className="nav-item active">
+                  <li className="nav-item">
                     <Link
                       className="nav-link"
                       to="/profile"
@@ -74,7 +74,7 @@ class Navbar extends Component {
                       Profile
                     </Link>
                   </li>
-                  <li className="nav-item active">
+                  <li className="nav-item">
                     <button
                       className="btn btn-danger"
                       onClick={this.logout}
