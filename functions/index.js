@@ -74,19 +74,21 @@ exports.getTimeline = functions.https.onRequest((req, res) => {
 });
 
 exports.getProfile = functions.https.onRequest((req, res) => {
-  if (req.query.uid) {
-    admin.auth().getUser(req.query.uid).then(userRecord => {
-      return res.status(200).json({
-        uid: userRecord.uid,
-        displayName: userRecord.displayName,
-        email: userRecord.email,
-        photoURL: userRecord.photoURL
+  cors(req, res, () => {
+    if (req.query.uid) {
+      admin.auth().getUser(req.query.uid).then(userRecord => {
+        return res.status(200).json({
+          uid: userRecord.uid,
+          displayName: userRecord.displayName,
+          email: userRecord.email,
+          photoURL: userRecord.photoURL
+        });
+      }).catch(error => {
+        console.error(`Error fetching user profile for ${req.query.uid}:`, error);
+        return res.status(500).send();
       });
-    }).catch(error => {
-      console.error(`Error fetching user profile for ${req.query.uid}:`, error);
-      return res.status(500).send();
-    });
-  } else {
-    res.status(400).send();
-  }
+    } else {
+      res.status(400).send();
+    }
+  });
 });
