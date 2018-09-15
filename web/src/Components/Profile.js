@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { withRouter } from "react-router-dom";
 import firebase from './firebase';
 
-class Profile extends Component {
+export default class extends Component {
   state = {
     user: null
   }
@@ -16,9 +15,7 @@ class Profile extends Component {
     let uid = this.props.match.params.uid;
     if (!uid) {
       let user = firebase.auth().currentUser;
-      if (user) {
-        uid = user.uid;
-      }
+      if (user) uid = user.uid;
     }
     axios.get(`https://us-central1-gittogether-6f7ce.cloudfunctions.net/getProfile?uid=${uid}`).then(res => {
       this.setState({
@@ -42,5 +39,3 @@ class Profile extends Component {
     );
   }
 }
-
-export default withRouter(Profile);

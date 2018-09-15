@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
+import { withRouter } from "react-router-dom";
 import firebase from './firebase';
 
-export default class extends Component {
-
+class Login extends Component {
   authenticateWithGitHub = () => {
     var provider = new firebase.auth.GithubAuthProvider();
     provider.addScope('read:user');
-    firebase.auth().signInWithPopup(provider).catch(function(error) {
+    firebase.auth().signInWithPopup(provider).then(() => {
+      this.props.history.push('/');
+    }).catch(function(error) {
       var errorCode = error.code;
       if (errorCode === 'auth/account-exists-with-different-credential') {
         alert('You have signed up with a different provider for that email.');
@@ -30,3 +32,5 @@ export default class extends Component {
     );
   }
 }
+
+export default withRouter(Login);

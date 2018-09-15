@@ -53,15 +53,19 @@ export default class extends Component {
       <div>
         {this.state.authenticated === true
           ?
-          <Timeline>
-          <TimelineEvent
-            title='Testing'
-            body='Testing'
-            date={new Date().getTime()}
-            username='Testing'
-            photoURL='http://4.bp.blogspot.com/_Mk4QNmA2vYQ/TF_rSmYQC0I/AAAAAAAAAnU/DP6appPWOrQ/s1600/patata.jpg'
-          />
-          </Timeline>
+          <div className="row">
+            <div className="col-7">
+              <Timeline>
+                <TimelineEvent
+                  title='Testing'
+                  body='Testing'
+                  date={new Date().getTime()}
+                  username='Testing'
+                  photoURL='http://4.bp.blogspot.com/_Mk4QNmA2vYQ/TF_rSmYQC0I/AAAAAAAAAnU/DP6appPWOrQ/s1600/patata.jpg'
+                />
+              </Timeline>
+            </div>
+          </div>
           :
           <h1>You need to login to see the home page...</h1>
         }
