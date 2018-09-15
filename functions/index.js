@@ -26,17 +26,38 @@ exports.getTimeline = functions.https.onRequest((req, res) => {
       let following = [];
       let events = [];
       let promises = [];
-      snapshot.forEach(childSnapshot => {
-        let uid = childSnapshot.val();
-        following.push(uid);
-      });
-      following.forEach(uid => {
-        promises.push(new Promise((resolve, reject) => {
-          firebase.database.ref('events').orderByChild('user').startAt(uid).endAt(uid).startAt(0).limitToFirst(5).then('value', snapshot => {
-            resolve();
-          });
-        }));
-      });
+      if (snapshot.numChildren() > 0) {
+        snapshot.forEach(childSnapshot => {
+          let uid = childSnapshot.val();
+          following.push(uid);
+        });
+        following.forEach(uid => {
+          promises.push(new Promise((resolve, reject) => {
+            admin.auth().getUser(uid).then(userRecord => {
+              firebase.database.ref('events').orderByChild('user').startAt(uid).endAt(uid).startAt(0).limitToFirst(5).then('value', snapshot => {
+                events.push({
+                  body: snapshot.child('body').val(),
+                  time: snapshot.child('time').val(),
+                  title: snapshot.child('title').val(),
+                  uid: userRecord.uid,
+                  username: userRecord.displayName,
+                  photoURL: userRecord.photoURL
+                });
+                resolve();
+              });
+            }).catch(error => {
+              console.error(`Error fetching user profile for ${uid}:`, error);
+              resolve();
+            });
+          }));
+        });
+        Promise.all(promises, () => {
+          let sortedEvents = events.sort((a, b) => a.time - b.time);
+          res.status(200).json(sortedEvents);
+        });
+      } else {
+        res.status(204).send();
+      }
     });
   });
 });
