@@ -18,7 +18,6 @@ export default class extends Component {
         this.setState({
           authenticated: true
         });
-        this.props.history.push("/");
       } else {
         this.setState({
           authenticated: false
