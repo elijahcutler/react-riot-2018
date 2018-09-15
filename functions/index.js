@@ -1,8 +1,8 @@
-const cors = require('cors')({ origin: true });
 const functions = require('firebase-functions');
 const admin = require('firbase-admin');
+const cors = require('cors')({ origin: true });
 
-admin.initializeApp(firebase.config().firebase);
+admin.initializeApp(functions.config().firebase);
 
 const validateFirebaseIdToken = (req, res, next) => {
   cors(req, res, () => {
