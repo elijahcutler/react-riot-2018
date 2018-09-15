@@ -62,7 +62,7 @@ exports.getTimeline = functions.https.onRequest((req, res) => {
             });
           }));
         });
-        return Promise.all(promises, () => {
+        return Promise.all(promises).then(() => {
           let sortedEvents = events.sort((a, b) => a.time - b.time);
           return res.status(200).json(sortedEvents);
         });
@@ -76,19 +76,56 @@ exports.getTimeline = functions.https.onRequest((req, res) => {
 exports.getProfile = functions.https.onRequest((req, res) => {
   cors(req, res, () => {
     if (req.query.uid) {
-      admin.auth().getUser(req.query.uid).then(userRecord => {
-        return res.status(200).json({
-          uid: userRecord.uid,
-          displayName: userRecord.displayName,
-          email: userRecord.email,
-          photoURL: userRecord.photoURL
+      let user = {};
+      Promise.all([
+        new Promise((resolve, reject) => {
+          admin.database().ref(`users/${req.query.uid}/username`).once('value',snapshot => {
+            if (snapshot.exists()) {
+              resolve({
+                username: snapshot.val()
+              });
+            } else {
+              resolve();
+            }
+          }).catch(error => {reject(error)});
+        }),
+        new Promise((resolve, reject) => {
+          admin.auth().getUser(req.query.uid).then(userRecord => {
+            resolve({
+              uid: userRecord.uid,
+              displayName: userRecord.displayName,
+              email: userRecord.email,
+              photoURL: userRecord.photoURL
+            });
+          }).catch(error => reject(error));
+        })
+      ]).then(userData => {
+        var user = {};
+        userData.forEach(data => {
+          for(var key in data) user[key] = data[key];
         });
+        res.status(200).json(user);
       }).catch(error => {
         console.error(`Error fetching user profile for ${req.query.uid}:`, error);
-        return res.status(500).send();
+        res.status(500).send();
       });
     } else {
       res.status(400).send();
+    }
+  });
+});
+
+exports.setUsername = functions.https.onRequest((req, res) => {
+  validateFirebaseIdToken(req, res, () => {
+    if (req.method === 'POST') {
+      if (req.body.username) {
+        admin.database().ref(`users/${req.user.uid}/username`).set(req.body.username);
+        res.status(200).send();
+      } else {
+        res.status(400).send();
+      }
+    } else {
+      res.status(405).send();
     }
   });
 });

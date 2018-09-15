@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios'
 import { withRouter } from "react-router-dom";
 import firebase from './firebase';
 
@@ -6,8 +7,8 @@ class Login extends Component {
   authenticateWithGitHub = () => {
     var provider = new firebase.auth.GithubAuthProvider();
     provider.addScope('read:user');
-    firebase.auth().signInWithPopup(provider).then(() => {
-      this.props.history.push('/');
+    firebase.auth().signInWithPopup(provider).then(data => {
+      this.setUsername(data.additionalUserInfo.username);
     }).catch(function(error) {
       var errorCode = error.code;
       if (errorCode === 'auth/account-exists-with-different-credential') {
@@ -15,6 +16,26 @@ class Login extends Component {
       } else {
         console.error(error);
       }
+    });
+  };
+
+  setUsername = username => {
+    firebase.auth().currentUser.getIdToken(true).then(idToken => {
+      axios({
+        method: 'post',
+        url: 'http://localhost:5000/gittogether-6f7ce/us-central1/setUsername',
+        data: {
+          username
+        },
+        headers: {
+          authorization: `Bearer ${idToken}`
+        }
+      }).then(res => {
+        this.props.history.push('/');
+      }).catch(error => {
+        // TODO: Inform user of this error
+        console.error(error);
+      });
     });
   };
 
