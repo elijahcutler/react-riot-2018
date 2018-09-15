@@ -5,7 +5,7 @@ export default class extends Component {
 
   authenticateWithGitHub = () => {
     var provider = new firebase.auth.GithubAuthProvider();
-    provider.addScope('user');
+    provider.addScope('read:user');
     firebase.auth().signInWithPopup(provider).then(function(result) {
       var token = result.credential.accessToken;
       var user = result.user;
