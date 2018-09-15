@@ -13,6 +13,7 @@ const validateFirebaseIdToken = (req, res, next) => {
           req.user = decodedUser;
           next();
         }).catch(err => {
+          console.error(error);
           res.status(403).send();
         });
       } catch (error) {
@@ -27,7 +28,7 @@ const validateFirebaseIdToken = (req, res, next) => {
 
 exports.getTimeline = functions.https.onRequest((req, res) => {
   validateFirebaseIdToken(req, res, () => {
-    firebase.database.ref(`users/${req.user.uid}/following`).once('value', snapshot => {
+    admin.database().ref(`users/${req.user.uid}/following`).once('value', snapshot => {
       let following = [];
       let events = [];
       let promises = [];
@@ -39,7 +40,7 @@ exports.getTimeline = functions.https.onRequest((req, res) => {
         following.forEach(uid => {
           promises.push(new Promise((resolve, reject) => {
             admin.auth().getUser(uid).then(userRecord => {
-              firebase.database.ref('events').orderByChild('user').startAt(uid).endAt(uid).startAt(0).limitToFirst(5).then('value', snapshot => {
+              admin.database().ref('events').orderByChild('user').startAt(uid).endAt(uid).startAt(0).limitToFirst(5).then('value', snapshot => {
                 events.push({
                   body: snapshot.child('body').val(),
                   time: snapshot.child('time').val(),
