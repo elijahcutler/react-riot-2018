@@ -32,7 +32,12 @@ class Profile extends Component {
   render() {
     return (
       <div>
-        
+        {this.state.user
+          ?
+          <h1>{this.state.user.displayName}</h1>
+          :
+          <h1>Loading Profile</h1>
+        }
       </div>
     );
   }
