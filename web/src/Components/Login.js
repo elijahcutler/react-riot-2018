@@ -23,7 +23,7 @@ class Login extends Component {
     firebase.auth().currentUser.getIdToken(true).then(idToken => {
       axios({
         method: 'post',
-        url: 'http://localhost:5000/gittogether-6f7ce/us-central1/setUsername',
+        url: 'https://us-central1-gittogether-6f7ce.cloudfunctions.net/setUsername',
         data: {
           username
         },

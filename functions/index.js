@@ -79,7 +79,7 @@ exports.getProfile = functions.https.onRequest((req, res) => {
       let user = {};
       Promise.all([
         new Promise((resolve, reject) => {
-          admin.database().ref(`users/${req.query.uid}/username`).once('value',snapshot => {
+          admin.database().ref(`users/${req.query.uid}/username`).once('value', snapshot => {
             if (snapshot.exists()) {
               resolve({
                 username: snapshot.val()
@@ -91,7 +91,7 @@ exports.getProfile = functions.https.onRequest((req, res) => {
         }),
         new Promise((resolve, reject) => {
           admin.auth().getUser(req.query.uid).then(userRecord => {
-            resolve({
+            return resolve({
               uid: userRecord.uid,
               displayName: userRecord.displayName,
               email: userRecord.email,
@@ -104,7 +104,7 @@ exports.getProfile = functions.https.onRequest((req, res) => {
         userData.forEach(data => {
           for(var key in data) user[key] = data[key];
         });
-        res.status(200).json(user);
+        return res.status(200).json(user);
       }).catch(error => {
         console.error(`Error fetching user profile for ${req.query.uid}:`, error);
         res.status(500).send();
