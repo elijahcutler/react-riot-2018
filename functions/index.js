@@ -2,7 +2,12 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const cors = require('cors')({ origin: true });
 
-admin.initializeApp(functions.config().firebase);
+var serviceAccount = require('./serviceAccountKey.json');
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: 'https://gittogether-6f7ce.firebaseio.com'
+});
 
 const validateFirebaseIdToken = (req, res, next) => {
   cors(req, res, () => {
@@ -11,10 +16,10 @@ const validateFirebaseIdToken = (req, res, next) => {
         const idToken = req.headers.authorization.split('Bearer ')[1];
         admin.auth().verifyIdToken(idToken).then(decodedUser => {
           req.user = decodedUser;
-          next();
-        }).catch(err => {
+          return next();
+        }).catch(error => {
           console.error(error);
-          res.status(403).send();
+          return res.status(403).send();
         });
       } catch (error) {
         console.error(error);
@@ -40,7 +45,7 @@ exports.getTimeline = functions.https.onRequest((req, res) => {
         following.forEach(uid => {
           promises.push(new Promise((resolve, reject) => {
             admin.auth().getUser(uid).then(userRecord => {
-              admin.database().ref('events').orderByChild('user').startAt(uid).endAt(uid).startAt(0).limitToFirst(5).then('value', snapshot => {
+              return admin.database().ref('events').orderByChild('user').startAt(uid).endAt(uid).startAt(0).limitToFirst(5).then('value', snapshot => {
                 events.push({
                   body: snapshot.child('body').val(),
                   time: snapshot.child('time').val(),
@@ -49,21 +54,39 @@ exports.getTimeline = functions.https.onRequest((req, res) => {
                   username: userRecord.displayName,
                   photoURL: userRecord.photoURL
                 });
-                resolve();
+                return resolve();
               });
             }).catch(error => {
               console.error(`Error fetching user profile for ${uid}:`, error);
-              resolve();
+              return resolve();
             });
           }));
         });
-        Promise.all(promises, () => {
+        return Promise.all(promises, () => {
           let sortedEvents = events.sort((a, b) => a.time - b.time);
-          res.status(200).json(sortedEvents);
+          return res.status(200).json(sortedEvents);
         });
       } else {
         res.status(204).send();
       }
     });
   });
+});
+
+exports.getProfile = functions.https.onRequest((req, res) => {
+  if (req.query.uid) {
+    admin.auth().getUser(req.query.uid).then(userRecord => {
+      return res.status(200).json({
+        uid: userRecord.uid,
+        displayName: userRecord.displayName,
+        email: userRecord.email,
+        photoURL: userRecord.photoURL
+      });
+    }).catch(error => {
+      console.error(`Error fetching user profile for ${req.query.uid}:`, error);
+      return res.status(500).send();
+    });
+  } else {
+    res.status(400).send();
+  }
 });
