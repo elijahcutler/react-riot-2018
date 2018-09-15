@@ -16,7 +16,6 @@ class Navbar extends Component {
         this.setState({
           authenticated: true
         });
-        this.props.history.push("/");
       } else {
         this.setState({
           authenticated: false
@@ -64,28 +63,38 @@ class Navbar extends Component {
             </li>
           </ul>
           <div className="my-2 my-lg-0">
-            <ul className="navbar-nav mr-auto">
               {this.state.authenticated === true
                 ?
-                <li className="nav-item active">
-                  <button
-                    className="btn btn-danger"
-                    onClick={this.logout}
-                  >
-                    Logout
-                  </button>
-                </li>
+                <ul className="navbar-nav mr-auto">
+                  <li className="nav-item active">
+                    <Link
+                      className="nav-link"
+                      to="/profile"
+                    >
+                      Profile
+                    </Link>
+                  </li>
+                  <li className="nav-item active">
+                    <button
+                      className="btn btn-danger"
+                      onClick={this.logout}
+                    >
+                      Logout
+                    </button>
+                  </li>
+                </ul>
                 :
-                <li className="nav-item">
-                  <Link
-                    className="nav-link"
-                    to="/login"
-                  >
-                    Login
-                  </Link>
-                </li>
+                <ul className="navbar-nav mr-auto">
+                  <li className="nav-item">
+                    <Link
+                      className="nav-link"
+                      to="/login"
+                    >
+                      Login
+                    </Link>
+                  </li>
+                </ul>
               }
-            </ul>
           </div>
         </div>
       </nav>

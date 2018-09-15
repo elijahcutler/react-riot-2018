@@ -6,6 +6,7 @@ import {
 import Navbar from './Components/Navbar';
 import Home from './Components/Home';
 import Login from './Components/Login';
+import Profile from './Components/Profile';
 import {PublicRoute, PrivateRoute} from './Components/Routes';
 
 class App extends Component {
@@ -26,6 +27,16 @@ class App extends Component {
                 exact
                 path="/login"
                 component={props => <Login />}
+            />
+            <PrivateRoute
+                exact
+                path="/profile"
+                component={props => <Profile />}
+            />
+            <PublicRoute
+                exact
+                path="/profile/:uid"
+                component={props => <Profile />}
             />
           </Switch>
         </div>
