@@ -76,6 +76,12 @@ export default class extends Component {
     });
   }
 
+  handleKeyPress = press => {
+    if(press.key === "Enter"){
+      this.pushTimeLineEvent();
+    }
+  }
+
   render() {
     return (
       <div>
@@ -96,6 +102,7 @@ export default class extends Component {
                             type="text"
                             className="form-control"
                             placeholder="Message"
+                            onKeyDown={this.handleKeyPress}
                           />
                           <div className="input-group-prepend">
                             <button
