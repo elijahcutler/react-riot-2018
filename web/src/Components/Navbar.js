@@ -4,6 +4,8 @@ import {
   withRouter
 } from "react-router-dom";
 import firebase from 'firebase';
+import logo from '../assets/GitTogetherLogo.png';
+import logoText from '../assets/GitTogetherLogoText.png';
 
 class Navbar extends Component {
   state = {
@@ -34,8 +36,10 @@ class Navbar extends Component {
 
   render() {
     return (
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <a className="navbar-brand">GitTogether</a>
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a href="/" className="navbar-brand">
+          <img src={logoText} width="104" height="30" alt="" />
+        </a>
         <button
           className="navbar-toggler"
           type="button"
@@ -53,14 +57,6 @@ class Navbar extends Component {
           id="navbarSupportedContent"
         >
           <ul className="navbar-nav mr-auto">
-            <li className="nav-item">
-              <Link
-                className="nav-link"
-                to="/"
-              >
-                Home
-              </Link>
-            </li>
               <li className="nav-item">
                 <Link
                   className="nav-link"

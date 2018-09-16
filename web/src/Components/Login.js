@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios'
 import { withRouter } from "react-router-dom";
 import firebase from './firebase';
+import githubicon from '../assets/GitHubMark.png';
 
 class Login extends Component {
   authenticateWithGitHub = () => {
@@ -49,7 +50,7 @@ class Login extends Component {
         height: 'calc(100vh - 56px)'
        }}>
          <div className="text-center">
-          <h2>Login</h2>
+          <img src={githubicon} alt="Login" />
           <br />
           <button
             className="btn btn-primary btn-raised"
@@ -62,7 +63,10 @@ class Login extends Component {
             paddingTop: '20px'
            }}>
             <p>{"Don't have a GitHub account?"}</p>
-            <p>You can create one <a href="https://github.com/join?source=login">here.</a></p>
+            <p>
+              {"You can create one "}<a href="https://github.com/join"
+                target="_blank">here</a>.
+            </p>
           </div>
         </div>
       </div>
