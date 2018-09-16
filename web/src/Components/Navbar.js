@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import {Link} from "react-router-dom";
+import {
+  Link,
+  withRouter
+} from "react-router-dom";
 import firebase from 'firebase';
 
-export default class extends Component {
+class Navbar extends Component {
   state = {
     authenticated: false
   }
@@ -98,3 +101,5 @@ export default class extends Component {
     );
   }
 }
+
+export default withRouter(Navbar);
