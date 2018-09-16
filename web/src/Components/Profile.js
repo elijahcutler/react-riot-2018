@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import {withRouter} from "react-router-dom";
+import {
+  Link,
+  withRouter,
+  Route
+} from 'react-router-dom';
 import firebase from './firebase';
 
 class Profile extends Component {
   state = {
     canFollow: !!firebase.auth().currentUser,
     isFollowing: false,
+    following: [],
     user: null
   }
 
@@ -15,11 +20,14 @@ class Profile extends Component {
   }
 
   loadProfileToView = () => {
+    console.log(this.props)
     let uid = this.props.match.params.uid;
     if (!uid) {
       let user = firebase.auth().currentUser;
       if (user) uid = user.uid;
-      if (user.uid === uid) {
+    }
+    if (firebase.auth().currentUser) {
+      if (firebase.auth().currentUser.uid === uid) {
         this.setState({
           canFollow: false
         });
@@ -29,9 +37,56 @@ class Profile extends Component {
       this.setState({
         user: res.data
       });
+      this.loadFollowing(this.state.user.uid);
     }).catch(error => {
       this.setState({ error });
     });
+  }
+
+  loadFollowing = uid => {
+    axios.get(`https://us-central1-gittogether-6f7ce.cloudfunctions.net/getFollowers?uid=${uid}`).then(res => {
+      console.log(res.data);
+      this.setState({
+        following: res.data
+      });
+    }).catch(error => {
+      this.setState({ error });
+    });
+  }
+
+  renderFollowers = () => {
+    return <div>
+      {this.state.following.map(user => {
+        return <div
+          key={user.uid}
+          className="row"
+        >
+          <div className="col-2 mt-3">
+            <img
+              src={user.photoURL}
+              alt="Profile Picture"
+              style={{
+                width: '100%',
+                borderRadius: '58px',
+              }}
+            />
+          </div>
+          <div className="m-3">
+            <h3>
+              <Link
+                className="text-link"
+                to={`/profile/${user.uid}`}
+              >
+                {user.displayName || `@${user.username}`}
+              </Link>
+            </h3>
+            {user.displayName &&
+              <p>@{user.username}</p>
+            }
+          </div>
+        </div>;
+      })}
+    </div>;
   }
 
   follow = () => {
@@ -90,6 +145,38 @@ class Profile extends Component {
                   >
                     Follow
                   </button>
+                }
+              </div>
+            </div>
+            <div
+              className="col mt-3"
+              style={{
+                height: 'calc(100vh - 73px)',
+                overflowY: 'scroll'
+              }}
+            >
+              <div>
+                <ul className="nav nav-tabs">
+                  <li className="nav-item">
+                    <Link
+                      className="nav-link"
+                      to={`/profile/${this.state.user.uid}/following`}
+                    >
+                      Following
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link
+                      className="nav-link"
+                      to={`/profile/${this.state.user.uid}/groups`}
+                    >
+                      Groups
+                    </Link>
+                  </li>
+                </ul>
+                {this.props.location.pathname.endsWith('groups')
+                  ? <h1>Groups</h1>
+                  : this.renderFollowers()
                 }
               </div>
             </div>
