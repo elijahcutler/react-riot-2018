@@ -94,10 +94,10 @@ export default class extends Component {
   render() {
     return (
       <div>
-        {this.state.authenticated
+        {this.state.loaded
           ?
           <div>
-            {this.state.loaded
+            {this.state.authenticated
               ?
                 <div>
                   {!this.state.error
@@ -153,10 +153,10 @@ export default class extends Component {
                       </div>
                   }
                 </div>
-              : <div />
+              : <Lander />
             }
           </div>
-          : <Lander />
+          : <div />
         }
       </div>
     );
