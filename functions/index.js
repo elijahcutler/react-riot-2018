@@ -170,6 +170,7 @@ exports.userCreatedTimelineEvent = functions.auth.user().onCreate(user => {
   });
 });
 
+
 exports.getGlobalTimeline = functions.https.onRequest((req, res) => {
   cors(req, res, () => {
     admin.database().ref('timeline').limitToLast(25).once('value', snapshot => {
@@ -250,6 +251,28 @@ exports.followUser = functions.https.onRequest((req, res) => {
             return res.status(500).send();
           });
         }
+      } else {
+        res.status(400).send();
+      }
+    } else {
+      res.status(405).send();
+    }
+  });
+});
+
+exports.addTimelineEvent = functions.https.onRequest((req, res) => {
+  validateFirebaseIdToken(req, res, () => {
+    if (req.method === 'POST') {
+      if (req.body.body && req.body.body.length) {
+        console.log(req.body.body);
+        let key = admin.database().ref('timeline').push().key;
+        admin.database().ref(`timeline/${key}`).set({
+          body: req.body.body,
+          time: new Date().getTime(),
+          title: 'Posted a message!',
+          uid: req.user.uid
+        });
+        res.status(200).send();
       } else {
         res.status(400).send();
       }

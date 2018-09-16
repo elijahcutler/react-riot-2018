@@ -9,7 +9,8 @@ export default class extends Component {
     authenticated: false,
     idToken: null,
     error: null,
-    events: []
+    events: [],
+    value: ''
   }
 
   componentDidMount() {
@@ -48,6 +49,30 @@ export default class extends Component {
     });
   }
 
+  pushTimeLineEvent = () => {
+    axios({
+      method: 'post',
+      url: 'http://localhost:5000/gittogether-6f7ce/us-central1/addTimelineEvent',
+      data: {
+        body: this.state.value
+      },
+      headers: {
+        authorization: `Bearer ${this.state.idToken}`
+      }
+    }).then(res => {
+      console.log(res);
+    }).catch(error => {
+      // TODO: Inform user of this error
+      console.error(error);
+    });
+  }
+
+  handleChange = event => {
+    this.setState({
+      value: event.target.value
+    });
+  }
+
   render() {
     return (
       <div>
@@ -58,6 +83,17 @@ export default class extends Component {
               ?
                 <div className="container">
                   <Timeline events={this.state.events} global={false} />
+                  <div>
+                    <label>
+                      Message:
+                      <textarea
+                        value={this.state.value}
+                        onChange={this.handleChange}
+                        placeholder="Enter event text..."
+                      />
+                    </label>
+                    <button onClick={this.pushTimeLineEvent}>Submit</button>
+                  </div>
                 </div>
               : <h1>You need to login to see the home page...</h1>
             }
