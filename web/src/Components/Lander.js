@@ -11,22 +11,6 @@ export default class extends Component {
     return  (
       <div>
         <div className="content-wrapper">
-          {/* <header className="header-simple">
-            <div className="header-content">
-              <div className="row">
-                <div className="col-6 col-sm-3 col-md-3">
-                  <div>
-                    <a href="/" className="navbar-brand">
-                      <img src={logoText}
-                        alt="GitTogether"
-                        className="logo"
-                      />
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </header> */}
           <div className="container">
             <div className="row">
               <div className="col-12 col-md-6 px-4 px-md-0 col-text white-text">

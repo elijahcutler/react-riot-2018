@@ -3,6 +3,7 @@ import axios from 'axios'
 import { withRouter } from "react-router-dom";
 import firebase from './firebase';
 import githubicon from '../assets/GitHubMark.png';
+import '../assets/Login.css';
 
 class Login extends Component {
   authenticateWithGitHub = () => {
@@ -42,31 +43,25 @@ class Login extends Component {
 
   render() {
     return (
-      <div style={{
-        backgroundColor: '#e2e2e2',
-        display: 'flex',
-        justifyContent:'center',
-        alignItems:'center',
-        height: 'calc(100vh - 56px)'
-       }}>
-         <div className="text-center">
-          <img src={githubicon} alt="Login" />
-          <br />
-          <button
-            className="btn btn-primary btn-raised"
-            onClick={this.authenticateWithGitHub}
-          >
-            Login with GitHub
-          </button>
-          <br />
-          <div style={{
-            paddingTop: '20px'
-           }}>
-            <p>{"Don't have a GitHub account?"}</p>
-            <p>
-              {"You can create one "}<a href="https://github.com/join"
-                target="_blank">here</a>.
-            </p>
+      <div className="wrapper">
+        <div className="wrapper-login">
+           <div className="text-center">
+            <img src={githubicon} className="padded" alt="Login" />
+            <br />
+            <button
+              className="btn btn-primary btn-raised text-large"
+              onClick={this.authenticateWithGitHub}
+            >
+              Login with GitHub
+            </button>
+            <br />
+            <div className="info">
+              <p>{"Don't have a GitHub account?"}</p>
+              <p>
+                {"You can create one "}<a href="https://github.com/join"
+                  target="_blank">here</a>.
+              </p>
+            </div>
           </div>
         </div>
       </div>

@@ -6,6 +6,7 @@ import {
   Route
 } from 'react-router-dom';
 import firebase from './firebase';
+import '../assets/Profile.css';
 
 class Profile extends Component {
   state = {
@@ -232,7 +233,9 @@ class Profile extends Component {
               </div>
             </div>
           </div>
-          : <h1>Loading Profile</h1>
+          : <div className="loading-div">
+              <h1 className="loading-text">loading profile</h1>
+            </div>
         }
       </div>
     );

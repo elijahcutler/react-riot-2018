@@ -52,7 +52,8 @@ h3.big {
 .content-wrapper {
   flex: 1;
   background-image: url(landerBackground.png);
-  height: 100vh;
+  height: calc(100vh - 58px);
+  background-size: cover;
 }
 
 .container {

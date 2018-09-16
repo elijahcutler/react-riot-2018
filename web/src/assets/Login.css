@@ -1,0 +1,37 @@
+.wrapper {
+  background-color: #3b3c3d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 56px);
+}
+
+.wrapper-login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 445px;
+  width: 400px;
+  background-color: #e1e4e8;
+  box-shadow: 1px 1px 15px black;
+  padding: 2rem;
+}
+
+.padded {
+  padding-bottom: 1rem;
+}
+
+.text-large {
+  letter-spacing: 0.8px;
+  font-size: 1.25rem;
+}
+
+.info {
+  padding-top: 3rem;
+}
+
+p {
+  color: #7e7f82;
+  letter-spacing: 0.5px;
+  line-height: 80%;
+}

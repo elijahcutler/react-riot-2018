@@ -1,0 +1,16 @@
+.loading-text {
+  color: grey;
+  font-size: 40px;
+  font-weight: lighter;
+  text-align: center;
+  letter-spacing: 1px;
+
+}
+
+.loading-div {
+  margin-top: 4rem;
+  display: flex;
+  padding: 2rem;
+  justify-content: center;
+  height: 100vh;
+}
