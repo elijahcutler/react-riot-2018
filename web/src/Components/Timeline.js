@@ -19,6 +19,7 @@ export default class extends Component {
                     title={event.title}
                     body={event.body}
                     time={event.time}
+                    uid={event.uid}
                     username={event.username}
                     photoURL={event.photoURL}
                   />

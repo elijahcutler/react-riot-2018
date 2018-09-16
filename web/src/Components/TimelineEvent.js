@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Link} from "react-router-dom";
 import {TimelineEvent, TimelineBlip} from 'react-event-timeline';
 
 export default class extends Component {
@@ -19,13 +20,24 @@ export default class extends Component {
     }
   }
 
+  renderTitle = () => {
+    return <p>
+      <Link
+        className="text-primary"
+        to={`/profile/${this.props.uid}`}
+      >
+        {this.props.username}
+      </Link> {this.props.title}
+    </p>;
+  }
+
   render() {
     return (
       <div>
         {this.props.body
           ?
             <TimelineEvent
-              title={`${this.props.username} ${this.props.title}`}
+              title={this.renderTitle()}
               createdAt={this.props.time}
               icon={this.renderIcon()}
             >
@@ -33,11 +45,7 @@ export default class extends Component {
                 {this.props.body}
               </div>
             </TimelineEvent>
-          :
-            <TimelineBlip
-              title={`${this.props.username} ${this.props.title}`}
-              icon={this.renderIcon()}
-            />
+          : <TimelineBlip title={this.renderTitle()} icon={this.renderIcon()} />
         }
       </div>
     );
