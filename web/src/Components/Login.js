@@ -42,20 +42,28 @@ class Login extends Component {
   render() {
     return (
       <div style={{
+        backgroundColor: '#e2e2e2',
         display: 'flex',
         justifyContent:'center',
         alignItems:'center',
-         height: 'calc(100vh - 56px)'
+        height: 'calc(100vh - 56px)'
        }}>
          <div className="text-center">
-          <h2>Please login with GitHub</h2>
+          <h2>Login</h2>
           <br />
           <button
             className="btn btn-primary btn-raised"
             onClick={this.authenticateWithGitHub}
           >
-            Login
+            Login with GitHub
           </button>
+          <br />
+          <div style={{
+            paddingTop: '20px'
+           }}>
+            <p>{"Don't have a GitHub account?"}</p>
+            <p>You can create one <a href="https://github.com/join?source=login">here.</a></p>
+          </div>
         </div>
       </div>
     );
