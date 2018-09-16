@@ -253,12 +253,12 @@ exports.addTimelineEvent = functions.https.onRequest((req, res) => {
 exports.getFollowers = functions.https.onRequest((req, res) => {
   if(req.query.uid) {
     getUserInformation(req.query.uid).then(user => {
-      admin.database().ref(`users/${user.uid}/following`).once('value', snapshot => {
+      return admin.database().ref(`users/${user.uid}/following`).once('value', snapshot => {
         let promises = [];
         snapshot.forEach(childSnapshot => {
           promises.push(getUserInformation(childSnapshot.key));
         });
-        Promise.all(promises).then(following => {
+        return Promise.all(promises).then(following => {
           return res.status(200).json(following);
         }).catch(error => {
           console.error(`Error fetching followers for ${req.query.uid}:`, error);
