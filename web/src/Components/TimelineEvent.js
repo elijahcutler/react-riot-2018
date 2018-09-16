@@ -23,7 +23,10 @@ export default class extends Component {
     }
 
     this.state = {
-      bodyData: null
+      bodyData: null,
+      didLike: false,
+      didDislike: false,
+      didDelete: false
     }
   }
 
@@ -56,13 +59,23 @@ export default class extends Component {
   }
 
   renderInteractions = () => {
-    return <h3>
-      <span className="badge badge-success">
-        {this.props.likes}  <img src={thumbsUp} style={{marginTop: '-5px'}} />
-      </span> <span className="badge badge-danger">
-        {this.props.dislikes}  <img src={thumbsDown} style={{marginTop: '-5px'}} />
-      </span>
-    </h3>;
+    let likes = this.props.likes + (this.state.didLike ? 1 : 0);
+    let dislikes = this.props.dislikes + (this.state.didDislike ? 1 : 0);
+
+    return <div>
+      <button
+        className="btn btn-primary btn-raised btn-sm"
+        onClick={this.likeEvent}
+      >
+        {likes}  <img src={thumbsUp} style={{marginTop: '-5px'}} />
+      </button>
+      <button
+        className="btn btn-danger btn-raised btn-sm ml-1"
+        onClick={this.dislikeEvent}
+      >
+        {dislikes}  <img src={thumbsDown} style={{marginTop: '-5px'}} />
+      </button>
+    </div>;
   }
 
   renderBody = () => {
@@ -115,18 +128,6 @@ export default class extends Component {
   }
 
   renderButtons = () => {
-    let like = <button
-      className="btn btn-sm"
-      onClick={this.likeEvent}
-    >
-      <img src={thumbsUp} />
-    </button>
-    let dislike = <button
-      className="btn btn-sm"
-      onClick={this.dislikeEvent}
-    >
-      <img src={thumbsDown} />
-    </button>
     let trash = <button
       className="btn btn-sm"
       onClick={this.deleteEvent}
@@ -142,8 +143,6 @@ export default class extends Component {
 
     if (this.props.authenticated === true) {
       return <i>
-        {like}
-        {dislike}
         {this.props.title !== 'Followed a user!' &&
             <span>
               {this.props.isMine
@@ -171,7 +170,9 @@ export default class extends Component {
           authorization: `Bearer ${this.props.idToken}`
         }
       }).then(res => {
-        alert('Event liked.');
+        this.setState({
+          didLike: true
+        });
       }).catch(error => {
         console.error(error);
         alert('Unable to interact with event!');
@@ -194,7 +195,9 @@ export default class extends Component {
           authorization: `Bearer ${this.props.idToken}`
         }
       }).then(res => {
-        alert('Event disliked.');
+        this.setState({
+          didDislike: true
+        });
       }).catch(error => {
         console.error(error);
         alert('Unable to interact with event!');
@@ -250,7 +253,9 @@ export default class extends Component {
           authorization: `Bearer ${this.props.idToken}`
         }
       }).then(res => {
-        alert('Event deleted.');
+        this.setState({
+          didDelete: true
+        });
       }).catch(error => {
         console.error(error);
         alert('Unable to interact with event!');
@@ -264,7 +269,7 @@ export default class extends Component {
     let eventTime = moment(this.props.time, "").fromNow();
 
     return (
-      <div>
+      <div hidden={this.state.didDelete}>
         {this.props.body
           ?
             <TimelineEvent
