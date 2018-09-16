@@ -30,7 +30,7 @@ export default class extends Component {
               {this.props.global
                 ?
                   <div className="mx-auto text-center mt-2">
-                    <h2>Nothings happened yet?!</h2>
+                    <h2>Nothing has happened yet?!</h2>
                     <p>Be the first to <a href="#">make a post</a>!</p>
                   </div>
                 :
