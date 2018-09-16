@@ -8,6 +8,7 @@ export default class extends Component {
   state = {
     events: [],
     loaded: false,
+    canLoadMore: false,
     error: null
   }
 
@@ -15,16 +16,40 @@ export default class extends Component {
     this.fetchTimeline();
   }
 
-  fetchTimeline = (page = 0) => {
-    axios.get('https://us-central1-gittogether-6f7ce.cloudfunctions.net/getGlobalTimeline', {
+  fetchTimeline = (startAt = null) => {
+    let query = `${startAt ? `?startAt=${startAt}` : ''}`;
+    axios.get(`https://us-central1-gittogether-6f7ce.cloudfunctions.net/getGlobalTimeline${query}`, {
       headers: {
         authorization: `Bearer ${this.state.idToken}`
       }
     }).then(res => {
-      this.setState({
-        events: res.data,
-        loaded: true
-      });
+      if (res.status === 200) {
+        if (startAt) {
+          res.data.shift();
+          if (res.data.length) {
+            let newEvents = this.state.events.concat(res.data);
+            this.setState({
+              events: newEvents,
+              canLoadMore: res.data.length === 24,
+              loaded: true
+            });
+          } else {
+            this.setState({
+              canLoadMore: false
+            });
+          }
+        } else {
+          this.setState({
+            events: res.data,
+            canLoadMore: res.data.length === 25,
+            loaded: true
+          });
+        }
+      } else {
+        this.setState({
+          canLoadMore: false
+        });
+      }
     }).catch(error => {
       this.setState({
         error,
@@ -32,6 +57,10 @@ export default class extends Component {
       });
       console.error(error);
     });
+  }
+
+  loadNextPage = () => {
+    this.fetchTimeline(this.state.events.slice(-1).pop().id);
   }
 
   render() {
@@ -42,15 +71,28 @@ export default class extends Component {
           <div>
             {!this.state.error
               ?
-                <Timeline
+                <div
                   style={{
-                    height: 'calc(100vh - 57px)',
-                    maxHeight: 'calc(100vh - 57px)',
+                    height: 'calc(100vh - 58px)',
+                    maxHeight: 'calc(100vh - 58px)',
                     overflowY: 'scroll'
                   }}
-                  events={this.state.events}
-                  global={true}
-                />
+                >
+                  <Timeline
+                    events={this.state.events}
+                    global={true}
+                  />
+                  {this.state.canLoadMore &&
+                    <div className="text-center">
+                      <button
+                        className=" btn btn-primary btn-raised"
+                        onClick={this.loadNextPage}
+                      >
+                        Load More
+                      </button>
+                    </div>
+                  }
+                </div>
               :
                 <div className="mx-auto text-center mt-2">
                   <h2>Uh oh!</h2>
