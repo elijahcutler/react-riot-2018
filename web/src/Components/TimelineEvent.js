@@ -57,9 +57,9 @@ export default class extends Component {
 
   renderInteractions = () => {
     return <h3>
-      <span class="badge badge-success">
+      <span className="badge badge-success">
         {this.props.likes}  <img src={thumbsUp} style={{marginTop: '-5px'}} />
-      </span> <span class="badge badge-danger">
+      </span> <span className="badge badge-danger">
         {this.props.dislikes}  <img src={thumbsDown} style={{marginTop: '-5px'}} />
       </span>
     </h3>;
@@ -127,7 +127,10 @@ export default class extends Component {
     >
       <img src={thumbsDown} />
     </button>
-    let trash = <button className="btn btn-sm">
+    let trash = <button
+      className="btn btn-sm"
+      onClick={this.deleteEvent}
+    >
       <img src={deleteIcon} />
     </button>
     let report = <button
@@ -232,6 +235,28 @@ export default class extends Component {
         console.error(error);
         alert('Unable to submit report!');
       });
+    }
+  }
+
+  deleteEvent = () => {
+    if (this.props.authenticated) {
+      axios({
+        method: 'post',
+        url: 'https://us-central1-gittogether-6f7ce.cloudfunctions.net/deleteEvent',
+        data: {
+          id: this.props.id
+        },
+        headers: {
+          authorization: `Bearer ${this.props.idToken}`
+        }
+      }).then(res => {
+        alert('Event deleted.');
+      }).catch(error => {
+        console.error(error);
+        alert('Unable to interact with event!');
+      });
+    } else {
+      console.error('Unable to interact with this event, you must be authenticated.');
     }
   }
 
