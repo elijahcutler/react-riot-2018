@@ -9,6 +9,7 @@ import Home from './Components/Home';
 import Login from './Components/Login';
 import Profile from './Components/Profile';
 import Events from './Components/Events';
+import Calendar from './Components/MLHCalendar';
 import {PublicRoute, PrivateRoute} from './Components/Routes';
 
 class App extends Component {
@@ -64,6 +65,11 @@ class App extends Component {
                 exact
                 path="/events"
                 component={props => <Events />}
+            />
+            <PublicRoute
+                exact
+                path="/calendar"
+                component={props => <Calendar />}
             />
           </Switch>
         </div>

@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",
+    "csvtojson": "^2.0.8",
     "react": "^16.5.1",
     "react-dom": "^16.5.1",
     "react-event-timeline": "^1.5.4",

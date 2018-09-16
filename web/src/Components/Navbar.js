@@ -65,6 +65,14 @@ class Navbar extends Component {
                   Global Events
                 </Link>
               </li>
+                  <li className="nav-item">
+                    <Link
+                      className="nav-link"
+                      to="/calendar"
+                    >
+                      Calendar
+                    </Link>
+                  </li>
           </ul>
           <div className="my-2 my-lg-0">
               {this.state.authenticated === true
@@ -79,12 +87,12 @@ class Navbar extends Component {
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <button
-                      className="btn btn-danger"
+                    <a
+                      className="nav-link text-danger"
                       onClick={this.logout}
                     >
                       Logout
-                    </button>
+                    </a>
                   </li>
                 </ul>
                 :
