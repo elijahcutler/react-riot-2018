@@ -164,38 +164,74 @@ exports.userCreatedTimelineEvent = functions.auth.user().onCreate(user => {
 
 exports.getGlobalTimeline = functions.https.onRequest((req, res) => {
   cors(req, res, () => {
-    admin.database().ref('timeline').limitToLast(25).once('value', snapshot => {
-      let events = [];
-      let promises = [];
-      snapshot.forEach(childSnapshot => {
-        promises.push(getUserInformation(childSnapshot.child('uid').val()));
-        events.push({
-          body: childSnapshot.child('body').val(),
-          id: childSnapshot.key,
-          time: childSnapshot.child('time').val(),
-          title: childSnapshot.child('title').val(),
-          uid: childSnapshot.child('uid').val()
+    if (req.query.startAt) {
+      console.log(req.query.startAt);
+      admin.database().ref('timeline').orderByKey().endAt(req.query.startAt).limitToLast(25).once('value', snapshot => {
+        let events = [];
+        let promises = [];
+        snapshot.forEach(childSnapshot => {
+          promises.push(getUserInformation(childSnapshot.child('uid').val()));
+          events.push({
+            body: childSnapshot.child('body').val(),
+            id: childSnapshot.key,
+            time: childSnapshot.child('time').val(),
+            title: childSnapshot.child('title').val(),
+            uid: childSnapshot.child('uid').val()
+          });
+        });
+        Promise.all(promises).then(userData => {
+          let users = [];
+          userData.forEach(data => {
+            for (let key in data) {
+              if (!users[data.uid]) users[data.uid] = {};
+              users[data.uid][key] = data[key];
+            }
+          });
+          events.forEach(event => {
+            event.username = users[event.uid].displayName || users[event.uid].username;
+            event.photoURL = users[event.uid].photoURL;
+          });
+          let sortedEvents = events.sort((a, b) => b.time - a.time);
+          return res.status(200).send(sortedEvents);
+        }).catch(error => {
+          console.error('Unable to load global timeline:', error);
+          res.status(500).send();
         });
       });
-      Promise.all(promises).then(userData => {
-        let users = [];
-        userData.forEach(data => {
-          for (let key in data) {
-            if (!users[data.uid]) users[data.uid] = {};
-            users[data.uid][key] = data[key];
-          }
+    } else {
+      admin.database().ref('timeline').limitToLast(25).once('value', snapshot => {
+        let events = [];
+        let promises = [];
+        snapshot.forEach(childSnapshot => {
+          promises.push(getUserInformation(childSnapshot.child('uid').val()));
+          events.push({
+            body: childSnapshot.child('body').val(),
+            id: childSnapshot.key,
+            time: childSnapshot.child('time').val(),
+            title: childSnapshot.child('title').val(),
+            uid: childSnapshot.child('uid').val()
+          });
         });
-        events.forEach(event => {
-          event.username = users[event.uid].displayName || users[event.uid].username;
-          event.photoURL = users[event.uid].photoURL;
+        Promise.all(promises).then(userData => {
+          let users = [];
+          userData.forEach(data => {
+            for (let key in data) {
+              if (!users[data.uid]) users[data.uid] = {};
+              users[data.uid][key] = data[key];
+            }
+          });
+          events.forEach(event => {
+            event.username = users[event.uid].displayName || users[event.uid].username;
+            event.photoURL = users[event.uid].photoURL;
+          });
+          let sortedEvents = events.sort((a, b) => b.time - a.time);
+          return res.status(200).send(sortedEvents);
+        }).catch(error => {
+          console.error('Unable to load global timeline:', error);
+          res.status(500).send();
         });
-        let sortedEvents = events.sort((a, b) => b.time - a.time);
-        return res.status(200).send(sortedEvents);
-      }).catch(error => {
-        console.error('Unable to load global timeline:', error);
-        res.status(500).send();
       });
-    });
+    }
   });
 });
 
