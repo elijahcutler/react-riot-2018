@@ -55,6 +55,9 @@ export default class extends Component {
                     body={event.body}
                     time={event.time}
                     uid={event.uid}
+                    likes={event.likes}
+                    dislikes={event.dislikes}
+                    reports={event.reports}
                     username={event.username}
                     photoURL={event.photoURL}
                     authenticated={this.state.authenticated}

@@ -55,6 +55,16 @@ export default class extends Component {
     </p>;
   }
 
+  renderInteractions = () => {
+    return <h3>
+      <span class="badge badge-success">
+        {this.props.likes}  <img src={thumbsUp} style={{marginTop: '-5px'}} />
+      </span> <span class="badge badge-danger">
+        {this.props.dislikes}  <img src={thumbsDown} style={{marginTop: '-5px'}} />
+      </span>
+    </h3>;
+  }
+
   renderBody = () => {
     switch (this.props.title) {
       case 'Followed a user!':
@@ -65,44 +75,56 @@ export default class extends Component {
           }
         </div>;
       default:
-        return this.props.body;
+        return <div>
+          <p>{this.props.body}</p>
+          {this.renderInteractions()}
+        </div>;
     }
   }
 
   renderUserProfile = () => {
-    return <div className="mt-2 mb-2 row">
-      <div className="col-sm-4 col-md-2 col-lg-1">
-        <img
-          src={this.state.bodyData.photoURL}
-          alt="Profile Picture"
-          className="d-inline"
-          style={{
-            width: '100%',
-            borderRadius: '20px',
-          }}
-        />
+    return <div>
+      <div className="mt-2 mb-2 row">
+        <div className="col-sm-4 col-md-2 col-lg-1">
+          <img
+            src={this.state.bodyData.photoURL}
+            alt="Profile Picture"
+            className="d-inline"
+            style={{
+              width: '100%',
+              borderRadius: '20px',
+            }}
+          />
+        </div>
+        <div className="col">
+          <h3>
+            <Link
+              className="text-primary"
+              to={`/profile/${this.state.bodyData.uid}`}
+            >
+              {this.state.bodyData.displayName || `@${this.state.bodyData.username}`}
+            </Link>
+          </h3>
+          {this.state.bodyData.displayName &&
+            <p>@{this.state.bodyData.username}</p>
+          }
+        </div>
       </div>
-      <div className="col">
-        <h3>
-          <Link
-            className="text-primary"
-            to={`/profile/${this.state.bodyData.uid}`}
-          >
-            {this.state.bodyData.displayName || `@${this.state.bodyData.username}`}
-          </Link>
-        </h3>
-        {this.state.bodyData.displayName &&
-          <p>@{this.state.bodyData.username}</p>
-        }
-      </div>
+      {this.renderInteractions()}
     </div>;
   }
 
   renderButtons = () => {
-    let like = <button className="btn btn-sm">
+    let like = <button
+      className="btn btn-sm"
+      onClick={this.likeEvent}
+    >
       <img src={thumbsUp} />
     </button>
-    let dislike = <button className="btn btn-sm">
+    let dislike = <button
+      className="btn btn-sm"
+      onClick={this.dislikeEvent}
+    >
       <img src={thumbsDown} />
     </button>
     let trash = <button className="btn btn-sm">
@@ -133,6 +155,52 @@ export default class extends Component {
     }
   }
 
+  likeEvent = () => {
+    if (this.props.authenticated) {
+      axios({
+        method: 'post',
+        url: 'https://us-central1-gittogether-6f7ce.cloudfunctions.net/preformEventAction',
+        data: {
+          id: this.props.id,
+          type: 'like'
+        },
+        headers: {
+          authorization: `Bearer ${this.props.idToken}`
+        }
+      }).then(res => {
+        alert('Event liked.');
+      }).catch(error => {
+        console.error(error);
+        alert('Unable to interact with event!');
+      });
+    } else {
+      console.error('Unable to interact with this event, you must be authenticated.');
+    }
+  }
+
+  dislikeEvent = () => {
+    if (this.props.authenticated) {
+      axios({
+        method: 'post',
+        url: 'https://us-central1-gittogether-6f7ce.cloudfunctions.net/preformEventAction',
+        data: {
+          id: this.props.id,
+          type: 'dislike'
+        },
+        headers: {
+          authorization: `Bearer ${this.props.idToken}`
+        }
+      }).then(res => {
+        alert('Event disliked.');
+      }).catch(error => {
+        console.error(error);
+        alert('Unable to interact with event!');
+      });
+    } else {
+      console.error('Unable to interact with this event, you must be authenticated.');
+    }
+  }
+
   reportEvent = () => {
     if (this.props.authenticated) {
       axios({
@@ -145,7 +213,12 @@ export default class extends Component {
         headers: {
           authorization: `Bearer ${this.props.idToken}`
         }
-      })
+      }).then(res => {
+        alert('Report submitted. This event will be reviwed!');
+      }).catch(error => {
+        console.error(error);
+        alert('Unable to submit report!');
+      });
     } else {
       axios({
         method: 'post',
