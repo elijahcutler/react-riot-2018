@@ -311,3 +311,47 @@ exports.getFollowers = functions.https.onRequest((req, res) => {
     }
   });
 });
+
+exports.reportEvent = functions.https.onRequest((req, res) => {
+  cors(req, res, () => {
+    if (req.method === 'POST') {
+      if (req.body.id) {
+        admin.database().ref(`timeline/${req.body.id}`).once('value', snapshot => {
+          if (snapshot.exists()) {
+            let key = admin.database().ref(`timeline/${snapshot.key}/reports`).push().key;
+            admin.database().ref(`timeline/${snapshot.key}/reports/${key}`).set(true);
+            res.status(200).send();
+          } else {
+            res.status(404).send();
+          }
+        });
+      } else {
+        res.status(400).send();
+      }
+    } else {
+      res.status(405).send();
+    }
+  });
+});
+
+exports.preformEventAction = functions.https.onRequest((req, res) => {
+  validateFirebaseIdToken(req, res, () => {
+    if (req.method === 'POST') {
+      if (req.body.id
+        && (req.body.type === 'report' || req.body.type === 'like' || req.body.type === 'dislike')) {
+        admin.database().ref(`timeline/${req.body.id}`).once('value', snapshot => {
+          if (snapshot.exists()) {
+            admin.database().ref(`timeline/${snapshot.key}/${req.body.type}s/${req.user.uid}`).set(true);
+            res.status(200).send();
+          } else {
+            res.status(404).send();
+          }
+        });
+      } else {
+        res.status(400).send();
+      }
+    } else {
+      res.status(405).send();
+    }
+  });
+});
