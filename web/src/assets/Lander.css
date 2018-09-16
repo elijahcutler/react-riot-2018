@@ -1,0 +1,129 @@
+h1.big {
+  font-size: 50px;
+  font-weight: 700;
+  text-align: left;
+}
+
+h3.big {
+  font-size: 30px;
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+
+.header-simple {
+  background: none;
+  box-shadow: none;
+  left: 50%;
+  transform: translate(1%);
+  width: 100%;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  border-top: none;
+  box-sizing: border-box;
+  min-height: 70px;
+  margin: auto;
+  positon: relative;
+  z-index: 1011;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.navbar-brand {
+  margin-right: 1rem;
+  font-size: 1.25rem;
+  line-height: inherit;
+  white-space: nowrap;
+}
+
+.logo {
+  max-width: 100%;
+  width: 50rem;
+  vertical-align: middle;
+}
+
+.content-wrapper {
+  flex: 1;
+  background-image: url(landerBackground.png);
+  height: 100vh;
+}
+
+.container {
+  width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.col-text {
+  padding-top: 12rem;
+  padding-bottom: 6rem;
+}
+
+.form-wrapper {
+    box-shadow: 0 2px 8px 0 rgba(222, 222, 222, 0.77);
+    width: 400px;
+    height: 400px;
+    background: white;
+    max-width: 100%;
+    margin-top: 0px;
+    margin-right: auto;
+    margin-bottom: 0px;
+    margin-left: auto;
+}
+
+.register {
+  padding-top: 2rem;
+  margin: 2rem;
+}
+
+.logo-small {
+  height: 64px;
+  width: 64px;
+  vertical-align: middle;
+  border: none;
+}
+
+.white-text {
+  color: white;
+  text-shadow: 2px 2px black;
+}
+
+.invert {
+  filter: invert(100%);
+}
+
+.revert-text-spacing {
+  letter-spacing: -1px;
+}
+
+.large {
+  padding-top: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.weighted {
+  font-size: 30px;
+  font-weight: bolder;
+  letter-spacing: 0.3px;
+}
+
+.register-info {
+  margin: 2rem;
+  letter-spacing: 0.5px;
+  text-align: center;
+  font-weight: lighter;
+}
+
+.centered-button {
+    display: flex;
+    justify-content: center;
+}

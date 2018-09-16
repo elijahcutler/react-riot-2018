@@ -3,6 +3,7 @@ import axios from 'axios';
 import firebase from './firebase';
 import Timeline from './Timeline';
 import TimelineEvent from './TimelineEvent';
+import Lander from './Lander';
 
 export default class extends Component {
   state = {
@@ -155,7 +156,7 @@ export default class extends Component {
               : <div />
             }
           </div>
-          : <div />
+          : <Lander />
         }
       </div>
     );
