@@ -108,7 +108,10 @@ export default class extends Component {
     let trash = <button className="btn btn-sm">
       <img src={deleteIcon} />
     </button>
-    let report = <button className="btn btn-sm">
+    let report = <button
+      className="btn btn-sm"
+      onClick={this.reportEvent}
+    >
       <img src={reportIcon} />
     </button>
 
@@ -127,6 +130,35 @@ export default class extends Component {
       </i>;
     } else {
       return report;
+    }
+  }
+
+  reportEvent = () => {
+    if (this.props.authenticated) {
+      axios({
+        method: 'post',
+        url: 'https://us-central1-gittogether-6f7ce.cloudfunctions.net/preformEventAction',
+        data: {
+          id: this.props.id,
+          type: 'report'
+        },
+        headers: {
+          authorization: `Bearer ${this.props.idToken}`
+        }
+      })
+    } else {
+      axios({
+        method: 'post',
+        url: 'https://us-central1-gittogether-6f7ce.cloudfunctions.net/reportEvent',
+        data: {
+          id: this.props.id
+        }
+      }).then(res => {
+        alert('Report submitted. This event will be reviwed!');
+      }).catch(error => {
+        console.error(error);
+        alert('Unable to submit report!');
+      });
     }
   }
 
