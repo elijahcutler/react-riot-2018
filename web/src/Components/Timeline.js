@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import {Timeline} from 'react-event-timeline'
+import {Link} from 'react-router-dom';
+import {Timeline} from 'react-event-timeline';
 import TimelineEvent from './TimelineEvent';
 
 export default class extends Component {
@@ -35,7 +36,12 @@ export default class extends Component {
                 :
                   <div className="mx-auto text-center mt-2">
                     <h2>Uh oh!</h2>
-                    <p>Your timeline is empty. Check out the <a href="#">global timeline</a> or start following others to get some posts!</p>
+                    <p>Your timeline is empty. Check out the <Link
+                      className="text-primary"
+                      to="/events"
+                    >
+                      global timeline
+                    </Link> or start following others to get some posts!</p>
                   </div>
               }
             </div>
