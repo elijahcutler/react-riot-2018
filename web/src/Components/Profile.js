@@ -20,7 +20,6 @@ class Profile extends Component {
   }
 
   loadProfileToView = () => {
-    console.log(this.props)
     let uid = this.props.match.params.uid;
     if (!uid) {
       let user = firebase.auth().currentUser;
