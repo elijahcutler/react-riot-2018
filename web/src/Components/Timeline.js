@@ -1,9 +1,24 @@
 import React, { Component } from 'react';
+import firebase from 'firebase';
 import {Link} from 'react-router-dom';
 import {Timeline} from 'react-event-timeline';
 import TimelineEvent from './TimelineEvent';
 
 export default class extends Component {
+  state = {
+    authenticated: false,
+    uid: null
+  }
+
+  componentDidMount() {
+    firebase.auth().onAuthStateChanged(user => {
+      this.setState({
+        authenticated: !!user,
+        uid: user.uid || null
+      });
+    });
+  }
+
   render() {
     let events = this.props.events;
 
@@ -22,6 +37,8 @@ export default class extends Component {
                     uid={event.uid}
                     username={event.username}
                     photoURL={event.photoURL}
+                    authenticated={this.state.authenticated}
+                    isMine={this.state.uid === event.uid}
                   />
                 )
               })}

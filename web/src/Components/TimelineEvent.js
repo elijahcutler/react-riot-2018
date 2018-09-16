@@ -3,6 +3,10 @@ import axios from 'axios';
 import moment from 'moment';
 import {Link} from "react-router-dom";
 import {TimelineEvent, TimelineBlip} from 'react-event-timeline';
+import reportIcon from '../assets/octoicons/report.svg';
+import thumbsUp from '../assets/octoicons/thumbsup.svg';
+import thumbsDown from '../assets/octoicons/thumbsdown.svg';
+import deleteIcon from '../assets/octoicons/trashcan.svg';
 
 export default class extends Component {
   constructor(props) {
@@ -94,6 +98,38 @@ export default class extends Component {
     </div>;
   }
 
+  renderButtons = () => {
+    let like = <button className="btn btn-sm">
+      <img src={thumbsUp} />
+    </button>
+    let dislike = <button className="btn btn-sm">
+      <img src={thumbsDown} />
+    </button>
+    let trash = <button className="btn btn-sm">
+      <img src={deleteIcon} />
+    </button>
+    let report = <button className="btn btn-sm">
+      <img src={reportIcon} />
+    </button>
+
+    if (this.props.authenticated === true) {
+      return <i>
+        {like}
+        {dislike}
+        {this.props.title !== 'Followed a user!' &&
+            <span>
+              {this.props.isMine
+                ? trash
+                : report
+              }
+            </span>
+        }
+      </i>;
+    } else {
+      return report;
+    }
+  }
+
   render() {
     let eventTime = moment(this.props.time, "").fromNow();
 
@@ -105,6 +141,7 @@ export default class extends Component {
               title={this.renderTitle()}
               createdAt={eventTime}
               icon={this.renderIcon()}
+              buttons={this.renderButtons()}
             >
               <div>
                 {this.renderBody()}
