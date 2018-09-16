@@ -10,7 +10,7 @@ export default class extends Component {
     idToken: null,
     error: null,
     events: [],
-    value: ''
+    messageBody: ''
   }
 
   componentDidMount() {
@@ -52,14 +52,17 @@ export default class extends Component {
   pushTimeLineEvent = () => {
     axios({
       method: 'post',
-      url: 'http://localhost:5000/gittogether-6f7ce/us-central1/addTimelineEvent',
+      url: 'https://us-central1-gittogether-6f7ce.cloudfunctions.net/addTimelineEvent',
       data: {
-        body: this.state.value
+        body: this.state.messageBody
       },
       headers: {
         authorization: `Bearer ${this.state.idToken}`
       }
     }).then(res => {
+      this.setState({
+        messageBody: ''
+      });
       console.log(res);
     }).catch(error => {
       // TODO: Inform user of this error
@@ -69,7 +72,7 @@ export default class extends Component {
 
   handleChange = event => {
     this.setState({
-      value: event.target.value
+      messageBody: event.target.value
     });
   }
 
@@ -83,16 +86,29 @@ export default class extends Component {
               ?
                 <div className="container">
                   <Timeline events={this.state.events} global={false} />
-                  <div>
-                    <label>
-                      Message:
-                      <textarea
-                        value={this.state.value}
-                        onChange={this.handleChange}
-                        placeholder="Enter event text..."
-                      />
-                    </label>
-                    <button onClick={this.pushTimeLineEvent}>Submit</button>
+                  <div className="fixed-bottom text-center">
+                    <div className="card">
+                      <div className="card-body">
+                        <div className="input-group mb-3">
+                          <input
+                            value={this.state.messageBody}
+                            onChange={this.handleChange}
+                            type="text"
+                            className="form-control"
+                            placeholder="Message"
+                          />
+                          <div className="input-group-prepend">
+                            <button
+                              className="btn btn-primary"
+                              type="button"
+                              onClick={this.pushTimeLineEvent}
+                            >
+                              Post
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               : <h1>You need to login to see the home page...</h1>
