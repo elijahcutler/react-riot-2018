@@ -7,7 +7,8 @@ import TimelineEvent from './TimelineEvent';
 export default class extends Component {
   state = {
     events: [],
-    loaded: false
+    loaded: false,
+    error: null
   }
 
   componentDidMount() {
@@ -26,6 +27,7 @@ export default class extends Component {
       });
     }).catch(error => {
       this.setState({
+        error,
         loaded: true
       });
       console.error(error);
@@ -36,7 +38,25 @@ export default class extends Component {
     return (
       <div>
        {this.state.loaded
-        ? <Timeline events={this.state.events} global={true} />
+        ?
+          <div>
+            {!this.state.error
+              ? <Timeline events={this.state.events} global={true} />
+              :
+                <div className="mx-auto text-center mt-2">
+                  <h2>Uh oh!</h2>
+                  <p>
+                    An error occurred! You can check the console to see what
+                    happend and submit an issue <a
+                      href="https://github.com/Hackbit/GitTogether/issues"
+                      target="_blank"
+                    >
+                      here
+                    </a> to get it resolved.
+                  </p>
+                </div>
+            }
+          </div>
         : <div />
       }
       </div>
