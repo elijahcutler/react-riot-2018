@@ -25,7 +25,7 @@ class Profile extends Component {
         });
       }
     }
-    axios.get(`http://localhost:5000/gittogether-6f7ce/us-central1/getProfile?uid=${uid}`).then(res => {
+    axios.get(`https://us-central1-gittogether-6f7ce.cloudfunctions.net/getProfile?uid=${uid}`).then(res => {
       this.setState({
         user: res.data
       });
