@@ -5,6 +5,8 @@ import firebase from './firebase';
 
 class Profile extends Component {
   state = {
+    canFollow: !!firebase.auth().currentUser,
+    isFollowing: false,
     user: null
   }
 
@@ -25,6 +27,31 @@ class Profile extends Component {
     }).catch(error => {
       this.setState({ error });
     });
+  }
+
+  follow = () => {
+    firebase.auth().currentUser.getIdToken(true).then(idToken => {
+      axios({
+        method: 'post',
+        url: 'https://us-central1-gittogether-6f7ce.cloudfunctions.net/followUser',
+        data: {
+          uid: this.state.user.uid,
+          following: true
+        },
+        headers: {
+          authorization: `Bearer ${idToken}`
+        }
+      }).then(res => {
+        console.log(res);
+      }).catch(error => {
+        // TODO: Inform user of this error
+        console.error(error);
+      });
+    });
+  }
+
+  unfollow = () => {
+
   }
 
   render() {
@@ -50,6 +77,14 @@ class Profile extends Component {
                 </h3>
                 {this.state.user.displayName &&
                   <p>@{this.state.user.username}</p>
+                }
+                {this.state.canFollow &&
+                  <button
+                    className="btn btn-primary btn-raised btn-block"
+                    onClick={this.follow}
+                  >
+                    Follow
+                  </button>
                 }
               </div>
             </div>

@@ -31,6 +31,36 @@ const validateFirebaseIdToken = (req, res, next) => {
   });
 };
 
+const getUserInformation = uid => {
+  return new Promise((resolve, reject) => {
+    let promises = [
+      new Promise((resolve, reject) => {
+        admin.database().ref(`users/${uid}/username`).once('value', snapshot => {
+          if (snapshot.exists()) resolve({ username: snapshot.val() });
+          else resolve();
+        }).catch(error => reject(error));
+      }),
+      new Promise((resolve, reject) => {
+        admin.auth().getUser(uid).then(userRecord => {
+          return resolve({
+            uid: userRecord.uid,
+            displayName: userRecord.displayName,
+            email: userRecord.email,
+            photoURL: userRecord.photoURL
+          });
+        }).catch(error => reject(error));
+      })
+    ];
+    Promise.all(promises).then(userData => {
+      let users = {};
+      userData.forEach(data => {
+        for (let key in data) users[key] = data[key];
+      });
+      return resolve(users);
+    }).catch(error => reject(error));
+  });
+}
+
 exports.getTimeline = functions.https.onRequest((req, res) => {
   validateFirebaseIdToken(req, res, () => {
     admin.database().ref(`users/${req.user.uid}/following`).once('value', snapshot => {
@@ -87,7 +117,7 @@ exports.getProfile = functions.https.onRequest((req, res) => {
             } else {
               resolve();
             }
-          }).catch(error => {reject(error)});
+          }).catch(error => reject(error));
         }),
         new Promise((resolve, reject) => {
           admin.auth().getUser(req.query.uid).then(userRecord => {
@@ -171,6 +201,7 @@ exports.getGlobalTimeline = functions.https.onRequest((req, res) => {
         }));
         events.push({
           body: childSnapshot.child('body').val(),
+          id: childSnapshot.key,
           time: childSnapshot.child('time').val(),
           title: childSnapshot.child('title').val(),
           uid: childSnapshot.child('uid').val()
@@ -195,5 +226,35 @@ exports.getGlobalTimeline = functions.https.onRequest((req, res) => {
         res.status(500).send();
       });
     });
+  });
+});
+
+exports.followUser = functions.https.onRequest((req, res) => {
+  validateFirebaseIdToken(req, res, () => {
+    if (req.method === 'POST') {
+      if (req.body.uid && req.body.following) {
+        let following = req.body.following || null;
+        if (following) {
+          getUserInformation(req.body.uid).then(user => {
+            admin.database().ref(`users/${req.user.uid}/following/${user.uid}`).set(following);
+            let key = admin.database().ref('timeline').push().key;
+            admin.database().ref(`timeline/${key}`).set({
+              body: user.uid,
+              time: new Date().getTime(),
+              title: 'Followed a user!',
+              uid: req.user.uid
+            });
+            return res.status(200).send();
+          }).catch(error => {
+            console.error(`Unable to ${following ? 'follow' : 'unfollow'} ${req.body.uid}:`, error);
+            return res.status(500).send();
+          });
+        }
+      } else {
+        res.status(400).send();
+      }
+    } else {
+      res.status(405).send();
+    }
   });
 });
