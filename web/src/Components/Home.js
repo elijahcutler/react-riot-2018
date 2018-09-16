@@ -8,6 +8,7 @@ export default class extends Component {
   state = {
     authenticated: false,
     idToken: null,
+    loaded: false,
     error: null,
     events: [],
     messageBody: ''
@@ -38,14 +39,21 @@ export default class extends Component {
   }
 
   fetchTimeline = (page = 0) => {
-    axios.get('http://localhost:5000/gittogether-6f7ce/us-central1/getTimeline', {
+    axios.get('https://us-central1-gittogether-6f7ce.cloudfunctions.net/getTimeline', {
       headers: {
         authorization: `Bearer ${this.state.idToken}`
       }
     }).then(res => {
-      console.log(res);
+      this.setState({
+        loaded: true,
+        events: res.data
+      });
     }).catch(error => {
-      this.setState({ error });
+      this.setState({
+        loaded: true,
+        error
+      });
+      console.error(error);
     });
   }
 
@@ -77,7 +85,7 @@ export default class extends Component {
   }
 
   handleKeyPress = press => {
-    if(press.key === "Enter"){
+    if (press.key === "Enter") {
       this.pushTimeLineEvent();
     }
   }
@@ -88,37 +96,63 @@ export default class extends Component {
         {this.state.authenticated
           ?
           <div>
-            {this.state.authenticated === true
+            {this.state.loaded
               ?
-                <div className="container">
-                  <Timeline events={this.state.events} global={false} />
-                  <div className="fixed-bottom text-center">
-                    <div className="card">
-                      <div className="card-body">
-                        <div className="input-group mb-3">
-                          <input
-                            value={this.state.messageBody}
-                            onChange={this.handleChange}
-                            type="text"
-                            className="form-control"
-                            placeholder="Message"
-                            onKeyDown={this.handleKeyPress}
-                          />
-                          <div className="input-group-prepend">
-                            <button
-                              className="btn btn-primary"
-                              type="button"
-                              onClick={this.pushTimeLineEvent}
-                            >
-                              Post
-                            </button>
+                <div>
+                  {!this.state.error
+                    ?
+                      <div>
+                        <Timeline
+                          style={{
+                            height: 'calc(100vh - 56px - 97px)',
+                            maxHeight: 'calc(100vh - 56px - 97px)',
+                            overflowY: 'scroll'
+                          }}
+                          events={this.state.events}
+                          global={false}
+                        />
+                        <div className="fixed-bottom text-center">
+                          <div className="card">
+                            <div className="card-body">
+                              <div className="input-group mb-3">
+                                <input
+                                  value={this.state.messageBody}
+                                  onChange={this.handleChange}
+                                  type="text"
+                                  className="form-control"
+                                  placeholder="Message"
+                                  onKeyDown={this.handleKeyPress}
+                                />
+                                <div className="input-group-prepend">
+                                  <button
+                                    className="btn btn-primary"
+                                    type="button"
+                                    onClick={this.pushTimeLineEvent}
+                                  >
+                                    Post
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
+                    :
+                      <div className="mx-auto text-center mt-2">
+                        <h2>Uh oh!</h2>
+                        <p>
+                          An error occurred! You can check the console to see what
+                          happend and submit an issue <a
+                            href="https://github.com/Hackbit/GitTogether/issues"
+                            target="_blank"
+                          >
+                            here
+                          </a> to get it resolved.
+                        </p>
+                      </div>
+                  }
                 </div>
-              : <h1>You need to login to see the home page...</h1>
+              : <div />
             }
           </div>
           : <div />

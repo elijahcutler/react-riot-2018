@@ -72,29 +72,46 @@ exports.getTimeline = functions.https.onRequest((req, res) => {
           let uid = childSnapshot.key;
           following.push(uid);
         });
-        following.forEach(uid => {
-          promises.push(new Promise((resolve, reject) => {
-            admin.auth().getUser(uid).then(userRecord => {
-              return admin.database().ref('events').orderByChild('user').startAt(uid).endAt(uid).startAt(0).limitToFirst(5).once('value', snapshot => {
-                events.push({
-                  body: snapshot.child('body').val(),
-                  time: snapshot.child('time').val(),
-                  title: snapshot.child('title').val(),
-                  uid: userRecord.uid,
-                  username: userRecord.displayName,
-                  photoURL: userRecord.photoURL
-                });
-                return resolve();
+        promises.push(getUserInformation(req.user.uid));
+        following.forEach(uid => promises.push(getUserInformation(uid)));
+        Promise.all(promises).then(userData => {
+          let eventPromises = [];
+          userData.forEach(userData => {
+            eventPromises.push(new Promise((resolve, reject) => {
+              admin.database().ref(`timeline`).orderByChild('uid').startAt(userData.uid).limitToLast(5).once('value', snapshot => {
+                if (snapshot.numChildren() > 0) {
+                  snapshot.forEach(childSnapshot => {
+                    events.push({
+                      body: childSnapshot.child('body').val(),
+                      id: childSnapshot.key,
+                      time: childSnapshot.child('time').val(),
+                      title: childSnapshot.child('title').val(),
+                      uid: childSnapshot.child('uid').val()
+                    });
+                  });
+                  return resolve();
+                } else return resolve();
               });
-            }).catch(error => {
-              console.error(`Error fetching user profile for ${uid}:`, error);
-              return resolve();
+            }));
+          });
+          return Promise.all(eventPromises).then(() => {
+            let users = [];
+            userData.forEach(data => {
+              for (let key in data) {
+                if (!users[data.uid]) users[data.uid] = {};
+                users[data.uid][key] = data[key];
+              }
             });
-          }));
-        });
-        return Promise.all(promises).then(() => {
-          let sortedEvents = events.sort((a, b) => a.time - b.time);
-          return res.status(200).json(sortedEvents);
+            events.forEach(event => {
+              event.username = users[event.uid].displayName || users[event.uid].username;
+              event.photoURL = users[event.uid].photoURL;
+            });
+            let sortedEvents = events.sort((a, b) => b.time - a.time);
+            return res.status(200).send(sortedEvents);
+          }).catch(error => res.status(500).send());
+        }).catch(error => {
+          console.error(`Error loading timeline for ${req.user.uid}:`, error);
+          res.status(500).send();
         });
       } else {
         res.status(204).send();
@@ -107,38 +124,12 @@ exports.getProfile = functions.https.onRequest((req, res) => {
   cors(req, res, () => {
     if (req.query.uid) {
       let user = {};
-      Promise.all([
-        new Promise((resolve, reject) => {
-          admin.database().ref(`users/${req.query.uid}/username`).once('value', snapshot => {
-            if (snapshot.exists()) {
-              resolve({
-                username: snapshot.val()
-              });
-            } else {
-              resolve();
-            }
-          }).catch(error => reject(error));
-        }),
-        new Promise((resolve, reject) => {
-          admin.auth().getUser(req.query.uid).then(userRecord => {
-            return resolve({
-              uid: userRecord.uid,
-              displayName: userRecord.displayName,
-              email: userRecord.email,
-              photoURL: userRecord.photoURL
-            });
-          }).catch(error => reject(error));
-        })
-      ]).then(userData => {
-        var user = {};
-        userData.forEach(data => {
-          for(var key in data) user[key] = data[key];
+      getUserInformation(req.query.uid)
+        .then(user => res.status(200).json(user))
+        .catch(error => {
+          console.error(`Error fetching user profile for ${req.query.uid}:`, error);
+          res.status(500).send();
         });
-        return res.status(200).json(user);
-      }).catch(error => {
-        console.error(`Error fetching user profile for ${req.query.uid}:`, error);
-        res.status(500).send();
-      });
     } else {
       res.status(400).send();
     }
@@ -177,29 +168,7 @@ exports.getGlobalTimeline = functions.https.onRequest((req, res) => {
       let events = [];
       let promises = [];
       snapshot.forEach(childSnapshot => {
-        promises.push(new Promise((resolve, reject) => {
-          admin.database().ref(`users/${childSnapshot.child('uid').val()}/username`).once('value', childChildSnapshot => {
-            if (childChildSnapshot.exists()) {
-              resolve({
-                uid: childSnapshot.child('uid').val(),
-                username: childChildSnapshot.val()
-              });
-            } else {
-              resolve();
-            }
-          })
-        }));
-        promises.push(new Promise((resolve, reject) => {
-          admin.auth().getUser(childSnapshot.child('uid').val())
-            .then(userRecord => resolve({
-              uid: userRecord.uid,
-              displayName: userRecord.displayName || null,
-              photoURL: userRecord.photoURL
-            }))
-            .catch(error => {
-              reject(error);
-            })
-        }));
+        promises.push(getUserInformation(childSnapshot.child('uid').val()));
         events.push({
           body: childSnapshot.child('body').val(),
           id: childSnapshot.key,

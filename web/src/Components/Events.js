@@ -41,7 +41,16 @@ export default class extends Component {
         ?
           <div>
             {!this.state.error
-              ? <Timeline events={this.state.events} global={true} />
+              ?
+                <Timeline
+                  style={{
+                    height: 'calc(100vh - 57px)',
+                    maxHeight: 'calc(100vh - 57px)',
+                    overflowY: 'scroll'
+                  }}
+                  events={this.state.events}
+                  global={true}
+                />
               :
                 <div className="mx-auto text-center mt-2">
                   <h2>Uh oh!</h2>

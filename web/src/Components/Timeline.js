@@ -8,14 +8,14 @@ export default class extends Component {
     let events = this.props.events;
 
     return (
-      <div>
+      <div style={this.props.style}>
         {events.length
           ?
             <Timeline>
               {events.map(event => {
                 return (
                   <TimelineEvent
-                    key={event.uid}
+                    key={event.id}
                     title={event.title}
                     body={event.body}
                     time={event.time}

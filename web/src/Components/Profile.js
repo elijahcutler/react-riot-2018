@@ -19,8 +19,13 @@ class Profile extends Component {
     if (!uid) {
       let user = firebase.auth().currentUser;
       if (user) uid = user.uid;
+      if (user.uid === uid) {
+        this.setState({
+          canFollow: false
+        });
+      }
     }
-    axios.get(`https://us-central1-gittogether-6f7ce.cloudfunctions.net/getProfile?uid=${uid}`).then(res => {
+    axios.get(`http://localhost:5000/gittogether-6f7ce/us-central1/getProfile?uid=${uid}`).then(res => {
       this.setState({
         user: res.data
       });
