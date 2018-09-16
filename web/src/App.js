@@ -23,11 +23,6 @@ class App extends Component {
           <Switch>
             <PublicRoute
                 exact
-                path="/"
-                component={props => <Home />}
-            />
-            <PublicRoute
-                exact
                 path="/login"
                 component={props => <Login />}
             />
@@ -63,13 +58,17 @@ class App extends Component {
             />
             <PublicRoute
                 exact
-                path="/events"
+                path="/activity"
                 component={props => <Events />}
             />
             <PublicRoute
                 exact
                 path="/calendar"
                 component={props => <Calendar />}
+            />
+            <PublicRoute
+                path="/"
+                component={props => <Home />}
             />
           </Switch>
         </div>
