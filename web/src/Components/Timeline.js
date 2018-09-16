@@ -15,10 +15,10 @@ export default class extends Component {
               {events.map(event => {
                 return (
                   <TimelineEvent
+                    key={event.uid}
                     title={event.title}
                     body={event.body}
-                    date={event.time}
-                    displayName={event.displayName}
+                    time={event.time}
                     username={event.username}
                     photoURL={event.photoURL}
                   />

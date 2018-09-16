@@ -6,12 +6,40 @@ import TimelineEvent from './TimelineEvent';
 
 export default class extends Component {
   state = {
-    events: []
+    events: [],
+    loaded: false
+  }
+
+  componentDidMount() {
+    this.fetchTimeline();
+  }
+
+  fetchTimeline = (page = 0) => {
+    axios.get('http://localhost:5000/gittogether-6f7ce/us-central1/getGlobalTimeline', {
+      headers: {
+        authorization: `Bearer ${this.state.idToken}`
+      }
+    }).then(res => {
+      this.setState({
+        events: res.data,
+        loaded: true
+      });
+    }).catch(error => {
+      this.setState({
+        loaded: true
+      });
+      console.error(error);
+    });
   }
 
   render() {
     return (
-      <Timeline events={this.state.events} global={true} />
+      <div>
+       {this.state.loaded
+        ? <Timeline events={this.state.events} global={true} />
+        : <div />
+      }
+      </div>
     );
   }
 }
