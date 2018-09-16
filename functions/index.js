@@ -86,7 +86,10 @@ exports.getTimeline = functions.https.onRequest((req, res) => {
                       id: childSnapshot.key,
                       time: childSnapshot.child('time').val(),
                       title: childSnapshot.child('title').val(),
-                      uid: childSnapshot.child('uid').val()
+                      uid: childSnapshot.child('uid').val(),
+                      likes: childSnapshot.child('likes').numChildren(),
+                      dislikes: childSnapshot.child('dislikes').numChildren(),
+                      reports: childSnapshot.child('reports').numChildren()
                     });
                   });
                   return resolve();
@@ -165,7 +168,6 @@ exports.userCreatedTimelineEvent = functions.auth.user().onCreate(user => {
 exports.getGlobalTimeline = functions.https.onRequest((req, res) => {
   cors(req, res, () => {
     if (req.query.startAt) {
-      console.log(req.query.startAt);
       admin.database().ref('timeline').orderByKey().endAt(req.query.startAt).limitToLast(25).once('value', snapshot => {
         let events = [];
         let promises = [];
@@ -176,7 +178,10 @@ exports.getGlobalTimeline = functions.https.onRequest((req, res) => {
             id: childSnapshot.key,
             time: childSnapshot.child('time').val(),
             title: childSnapshot.child('title').val(),
-            uid: childSnapshot.child('uid').val()
+            uid: childSnapshot.child('uid').val(),
+            likes: childSnapshot.child('likes').numChildren(),
+            dislikes: childSnapshot.child('dislikes').numChildren(),
+            reports: childSnapshot.child('reports').numChildren()
           });
         });
         Promise.all(promises).then(userData => {
@@ -209,7 +214,10 @@ exports.getGlobalTimeline = functions.https.onRequest((req, res) => {
             id: childSnapshot.key,
             time: childSnapshot.child('time').val(),
             title: childSnapshot.child('title').val(),
-            uid: childSnapshot.child('uid').val()
+            uid: childSnapshot.child('uid').val(),
+            likes: childSnapshot.child('likes').numChildren(),
+            dislikes: childSnapshot.child('dislikes').numChildren(),
+            reports: childSnapshot.child('reports').numChildren()
           });
         });
         Promise.all(promises).then(userData => {
