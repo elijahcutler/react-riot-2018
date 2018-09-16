@@ -282,7 +282,22 @@ exports.addTimelineEvent = functions.https.onRequest((req, res) => {
           title: 'Posted a message!',
           uid: req.user.uid
         });
-        res.status(200).send();
+        getUserInformation(req.user.uid).then(userData => {
+          return res.status(200).send({
+            id: key,
+            likes: 0,
+            dislikes: 0,
+            reports: 0,
+            body: req.body.body,
+            time: new Date().getTime(),
+            title: 'Posted a message!',
+            uid: req.user.uid,
+            username: userData.displayName || userData.username,
+            photoURL: userData.photoURL
+          });
+        }).catch(error => {
+          res.status(500).send();
+        });
       } else {
         res.status(400).send();
       }
