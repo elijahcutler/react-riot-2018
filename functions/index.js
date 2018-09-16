@@ -246,24 +246,22 @@ exports.getGlobalTimeline = functions.https.onRequest((req, res) => {
 exports.followUser = functions.https.onRequest((req, res) => {
   validateFirebaseIdToken(req, res, () => {
     if (req.method === 'POST') {
-      if (req.body.uid && req.body.following) {
+      if (req.body.uid && req.body.following !== null) {
         let following = req.body.following || null;
-        if (following) {
-          getUserInformation(req.body.uid).then(user => {
-            admin.database().ref(`users/${req.user.uid}/following/${user.uid}`).set(following);
-            let key = admin.database().ref('timeline').push().key;
-            admin.database().ref(`timeline/${key}`).set({
-              body: user.uid,
-              time: new Date().getTime(),
-              title: 'Followed a user!',
-              uid: req.user.uid
-            });
-            return res.status(200).send();
-          }).catch(error => {
-            console.error(`Unable to ${following ? 'follow' : 'unfollow'} ${req.body.uid}:`, error);
-            return res.status(500).send();
+        getUserInformation(req.body.uid).then(user => {
+          admin.database().ref(`users/${req.user.uid}/following/${user.uid}`).set(following);
+          let key = admin.database().ref('timeline').push().key;
+          admin.database().ref(`timeline/${key}`).set({
+            body: user.uid,
+            time: new Date().getTime(),
+            title: 'Followed a user!',
+            uid: req.user.uid
           });
-        }
+          return res.status(200).send();
+        }).catch(error => {
+          console.error(`Unable to ${following ? 'follow' : 'unfollow'} ${req.body.uid}:`, error);
+          return res.status(500).send();
+        });
       } else {
         res.status(400).send();
       }
@@ -360,6 +358,18 @@ exports.preformEventAction = functions.https.onRequest((req, res) => {
       }
     } else {
       res.status(405).send();
+    }
+  });
+});
+
+exports.amIFollowing = functions.https.onRequest((req, res) => {
+  validateFirebaseIdToken(req, res, () => {
+    if (req.query.uid) {
+      admin.database().ref(`users/${req.user.uid}/following/${req.query.uid}`).once('value', snapshot => {
+        res.status(200).send(snapshot.exists());
+      });
+    } else {
+      res.status(400).send();
     }
   });
 });
