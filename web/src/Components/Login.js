@@ -41,14 +41,22 @@ class Login extends Component {
 
   render() {
     return (
-      <div>
-        <h1>Login</h1>
-        <button
-          className="btn btn-primary btn-raised"
-          onClick={this.authenticateWithGitHub}
-        >
-          Login
-        </button>
+      <div style={{
+        display: 'flex',
+        justifyContent:'center',
+        alignItems:'center',
+         height: 'calc(100vh - 56px)'
+       }}>
+         <div className="text-center">
+          <h2>Please login with GitHub</h2>
+          <br />
+          <button
+            className="btn btn-primary btn-raised"
+            onClick={this.authenticateWithGitHub}
+          >
+            Login
+          </button>
+        </div>
       </div>
     );
   }
