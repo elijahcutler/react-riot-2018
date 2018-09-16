@@ -32,7 +32,47 @@ class Profile extends Component {
       <div>
         {this.state.user
           ?
-          <h1>{this.state.user.displayName}</h1>
+          <div>
+            <div className="media">
+              <img
+                className="mr-3"
+                src={this.state.user.photoURL}
+                alt="Profile Picture"
+                style={{
+                  width: '256px',
+                  height: '256px',
+                  borderRadius: '58px',
+                }}
+              />
+            <div className="media-body">
+              <h5 className="mt-0">{this.state.user.displayName}</h5>
+              <div>
+                <img
+                  src='https://bit.ly/1CCy7nP'
+                  alt="GitHub: "
+                  style={{
+                    width: '24px',
+                    height: '24px',
+                    borderRadius: '32px',
+                    float: 'left'
+                  }}
+                />
+                <p>{this.state.user.username}</p>
+              </div>
+              <div>
+                <img
+                  src='https://bit.ly/2Muw7nP'
+                  alt="Email: "
+                  style={{
+                    height: '24px',
+                    float: 'left'
+                  }}
+                />
+                <p>{this.state.user.email}</p>
+              </div>
+            </div>
+          </div>
+          </div>
           :
           <h1>Loading Profile</h1>
         }
