@@ -27,12 +27,14 @@ export default class extends Component {
         }).catch(error => {
           console.error('Unable to properly authenticate user:', error);
           this.setState({
+            loaded: true,
             authenticated: true,
             error
           });
         });
       } else {
         this.setState({
+          loaded: true,
           authenticated: false
         });
       }
