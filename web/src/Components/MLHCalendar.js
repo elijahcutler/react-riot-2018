@@ -78,25 +78,26 @@ class MLHCalendar extends Component {
             <thead>
               <tr>
                 <th scope="col">Events</th>
-                <th scope="col"></th>
               </tr>
             </thead>
             <tbody>
               {this.state.events.map(event => {
                 return (
                   <tr key={`${event.name}-${event.startDate}`}>
-                    <td>
-                      <img src={event.icon} />
-                    </td>
-                    <td>
-                      <h3>
-                        <a href={event.website} target="_blank">{event.name}</a>
-                      </h3>
-                      <p>
-                        {event.startDate} - {event.endDate}
-                        <br />
-                        {event.city}, {event.state}
-                      </p>
+                    <td className="row">
+                      <div className="col-sm-3 col-md-2">
+                        <img src={event.icon} />
+                      </div>
+                      <div className="col">
+                        <h3>
+                          <a href={event.website} target="_blank">{event.name}</a>
+                        </h3>
+                        <p>
+                          {event.startDate} - {event.endDate}
+                          <br />
+                          {event.city}, {event.state}
+                        </p>
+                      </div>
                     </td>
                   </tr>
                 )
