@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import moment from 'moment';
 import {Link} from "react-router-dom";
 import {TimelineEvent, TimelineBlip} from 'react-event-timeline';
 
@@ -65,33 +66,36 @@ export default class extends Component {
   }
 
   renderUserProfile = () => {
-    return <div className="mt-2 mb-2">
-      <img
-        src={this.state.bodyData.photoURL}
-        alt="Profile Picture"
-        className="d-inline"
-        style={{
-          width: '100px',
-          width: '100px',
-          borderRadius: '20px',
-        }}
-      />
-      <h3>
-        <Link
-          className="text-primary"
-          to={`/profile/${this.state.bodyData.uid}`}
-        >
-          {this.state.bodyData.displayName || `@${this.state.bodyData.username}`}
-        </Link>
-      </h3>
-      {this.state.bodyData.displayName &&
-        <p>@{this.state.bodyData.username}</p>
-      }
+    return <div className="mt-2 mb-2 row">
+      <div className="col-sm-4 col-md-2 col-lg-1">
+        <img
+          src={this.state.bodyData.photoURL}
+          alt="Profile Picture"
+          className="d-inline"
+          style={{
+            width: '100%',
+            borderRadius: '20px',
+          }}
+        />
+      </div>
+      <div className="col">
+        <h3>
+          <Link
+            className="text-primary"
+            to={`/profile/${this.state.bodyData.uid}`}
+          >
+            {this.state.bodyData.displayName || `@${this.state.bodyData.username}`}
+          </Link>
+        </h3>
+        {this.state.bodyData.displayName &&
+          <p>@{this.state.bodyData.username}</p>
+        }
+      </div>
     </div>;
   }
 
   render() {
-    let eventTime = Date(this.props.time);
+    let eventTime = moment(this.props.time, "").fromNow();
 
     return (
       <div>
