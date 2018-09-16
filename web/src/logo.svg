@@ -1,7 +1,107 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 841.9 595.3">
-    <g fill="#61DAFB">
-        <path d="M666.3 296.5c0-32.5-40.7-63.3-103.1-82.4 14.4-63.6 8-114.2-20.2-130.4-6.5-3.8-14.1-5.6-22.4-5.6v22.3c4.6 0 8.3.9 11.4 2.6 13.6 7.8 19.5 37.5 14.9 75.7-1.1 9.4-2.9 19.3-5.1 29.4-19.6-4.8-41-8.5-63.5-10.9-13.5-18.5-27.5-35.3-41.6-50 32.6-30.3 63.2-46.9 84-46.9V78c-27.5 0-63.5 19.6-99.9 53.6-36.4-33.8-72.4-53.2-99.9-53.2v22.3c20.7 0 51.4 16.5 84 46.6-14 14.7-28 31.4-41.3 49.9-22.6 2.4-44 6.1-63.6 11-2.3-10-4-19.7-5.2-29-4.7-38.2 1.1-67.9 14.6-75.8 3-1.8 6.9-2.6 11.5-2.6V78.5c-8.4 0-16 1.8-22.6 5.6-28.1 16.2-34.4 66.7-19.9 130.1-62.2 19.2-102.7 49.9-102.7 82.3 0 32.5 40.7 63.3 103.1 82.4-14.4 63.6-8 114.2 20.2 130.4 6.5 3.8 14.1 5.6 22.5 5.6 27.5 0 63.5-19.6 99.9-53.6 36.4 33.8 72.4 53.2 99.9 53.2 8.4 0 16-1.8 22.6-5.6 28.1-16.2 34.4-66.7 19.9-130.1 62-19.1 102.5-49.9 102.5-82.3zm-130.2-66.7c-3.7 12.9-8.3 26.2-13.5 39.5-4.1-8-8.4-16-13.1-24-4.6-8-9.5-15.8-14.4-23.4 14.2 2.1 27.9 4.7 41 7.9zm-45.8 106.5c-7.8 13.5-15.8 26.3-24.1 38.2-14.9 1.3-30 2-45.2 2-15.1 0-30.2-.7-45-1.9-8.3-11.9-16.4-24.6-24.2-38-7.6-13.1-14.5-26.4-20.8-39.8 6.2-13.4 13.2-26.8 20.7-39.9 7.8-13.5 15.8-26.3 24.1-38.2 14.9-1.3 30-2 45.2-2 15.1 0 30.2.7 45 1.9 8.3 11.9 16.4 24.6 24.2 38 7.6 13.1 14.5 26.4 20.8 39.8-6.3 13.4-13.2 26.8-20.7 39.9zm32.3-13c5.4 13.4 10 26.8 13.8 39.8-13.1 3.2-26.9 5.9-41.2 8 4.9-7.7 9.8-15.6 14.4-23.7 4.6-8 8.9-16.1 13-24.1zM421.2 430c-9.3-9.6-18.6-20.3-27.8-32 9 .4 18.2.7 27.5.7 9.4 0 18.7-.2 27.8-.7-9 11.7-18.3 22.4-27.5 32zm-74.4-58.9c-14.2-2.1-27.9-4.7-41-7.9 3.7-12.9 8.3-26.2 13.5-39.5 4.1 8 8.4 16 13.1 24 4.7 8 9.5 15.8 14.4 23.4zM420.7 163c9.3 9.6 18.6 20.3 27.8 32-9-.4-18.2-.7-27.5-.7-9.4 0-18.7.2-27.8.7 9-11.7 18.3-22.4 27.5-32zm-74 58.9c-4.9 7.7-9.8 15.6-14.4 23.7-4.6 8-8.9 16-13 24-5.4-13.4-10-26.8-13.8-39.8 13.1-3.1 26.9-5.8 41.2-7.9zm-90.5 125.2c-35.4-15.1-58.3-34.9-58.3-50.6 0-15.7 22.9-35.6 58.3-50.6 8.6-3.7 18-7 27.7-10.1 5.7 19.6 13.2 40 22.5 60.9-9.2 20.8-16.6 41.1-22.2 60.6-9.9-3.1-19.3-6.5-28-10.2zM310 490c-13.6-7.8-19.5-37.5-14.9-75.7 1.1-9.4 2.9-19.3 5.1-29.4 19.6 4.8 41 8.5 63.5 10.9 13.5 18.5 27.5 35.3 41.6 50-32.6 30.3-63.2 46.9-84 46.9-4.5-.1-8.3-1-11.3-2.7zm237.2-76.2c4.7 38.2-1.1 67.9-14.6 75.8-3 1.8-6.9 2.6-11.5 2.6-20.7 0-51.4-16.5-84-46.6 14-14.7 28-31.4 41.3-49.9 22.6-2.4 44-6.1 63.6-11 2.3 10.1 4.1 19.8 5.2 29.1zm38.5-66.7c-8.6 3.7-18 7-27.7 10.1-5.7-19.6-13.2-40-22.5-60.9 9.2-20.8 16.6-41.1 22.2-60.6 9.9 3.1 19.3 6.5 28.1 10.2 35.4 15.1 58.3 34.9 58.3 50.6-.1 15.7-23 35.6-58.4 50.6zM320.8 78.4z"/>
-        <circle cx="420.9" cy="296.5" r="45.7"/>
-        <path d="M520.5 78.1z"/>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="125" height="125" viewBox="0 0 250 250">
+  <metadata><?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>
+<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 5.6-c142 79.160924, 2017/07/13-01:06:39        ">
+   <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <rdf:Description rdf:about=""/>
+   </rdf:RDF>
+</x:xmpmeta>
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                           
+<?xpacket end="w"?></metadata>
+<defs>
+    <style>
+      .cls-1 {
+        fill: #95d86c;
+        filter: url(#filter);
+      }
+
+      .cls-2 {
+        filter: url(#filter-2);
+      }
+
+      .cls-3, .cls-4, .cls-6 {
+        fill: #fff;
+      }
+
+      .cls-3, .cls-4, .cls-5 {
+        fill-rule: evenodd;
+      }
+
+      .cls-4 {
+        stroke: #fff;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 4px;
+        filter: url(#filter-3);
+      }
+
+      .cls-5 {
+        fill: #e1e1e1;
+      }
+    </style>
+    <filter id="filter" x="0" y="0" width="250" height="250" filterUnits="userSpaceOnUse">
+      <feImage preserveAspectRatio="none" x="0" y="0" width="250" height="250" result="image" xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMjUwIiBoZWlnaHQ9IjI1MCIgdmlld0JveD0iMCAwIDI1MCAyNTAiPgogIDxkZWZzPgogICAgPHN0eWxlPgogICAgICAuY2xzLTEgewogICAgICAgIGZpbGw6IHVybCgjbGluZWFyLWdyYWRpZW50KTsKICAgICAgfQogICAgPC9zdHlsZT4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0ibGluZWFyLWdyYWRpZW50IiB4MT0iMTk3LjE2OSIgeDI9IjUyLjgzMSIgeTI9IjI1MCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgogICAgICA8c3RvcCBvZmZzZXQ9Ii0wLjI1IiBzdG9wLWNvbG9yPSIjNmY5Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iMS4yNSIgc3RvcC1jb2xvcj0iIzA5NiIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3QgY2xhc3M9ImNscy0xIiB3aWR0aD0iMjUwIiBoZWlnaHQ9IjI1MCIvPgo8L3N2Zz4K"/>
+      <feComposite result="composite" operator="in" in2="SourceGraphic"/>
+      <feBlend result="blend" in2="SourceGraphic"/>
+    </filter>
+    <filter id="filter-2" filterUnits="userSpaceOnUse">
+      <feOffset result="offset" dy="2" in="SourceAlpha"/>
+      <feGaussianBlur result="blur" stdDeviation="2"/>
+      <feFlood result="flood" flood-opacity="0.35"/>
+      <feComposite result="composite" operator="in" in2="blur"/>
+      <feBlend result="blend" in="SourceGraphic"/>
+    </filter>
+    <filter id="filter-3" x="309" y="386" width="121" height="78" filterUnits="userSpaceOnUse">
+      <feOffset result="offset" dy="2" in="SourceAlpha"/>
+      <feGaussianBlur result="blur" stdDeviation="2"/>
+      <feFlood result="flood" flood-opacity="0.35"/>
+      <feComposite result="composite" operator="in" in2="blur"/>
+      <feBlend result="blend" in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Artboard_1" data-name="Artboard 1">
+    <image x="-250" y="-250" width="750" height="750" xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXcAAAF3CAQAAAD0ycN1AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAALiMAAC4jAXilP3YAAAAHdElNRQfiCQ8SIxB+l3IVAAAEGUlEQVR42u3SQQ0CQRAAwTkCDvAvDQwQDPBYVHCb0FUK+tHHesx9PgP/7javY63dFXCWy7x3J8BJ3pfdBXAeuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNid0LsTojdCbE7IXYnxO6E2J0QuxNyrLU7Ac5ynefc57M7A37uNq8v5XoPgm4BN1cAAAAASUVORK5CYII="/>
+    <rect class="cls-1" width="250" height="250" rx="38.5" ry="38.5"/>
+    <g id="icon">
+      <g id="branch" class="cls-2">
+        <path class="cls-3" d="M368.949,427.783H345.428V314.009h23.521V427.783Z" transform="translate(-250 -250)"/>
+        <path id="Shape_2_copy" data-name="Shape 2 copy" class="cls-3" d="M368.321,389.366c-17.272-.356-20.806.548-22.812,0.637-0.014-.978-0.013-1.916.013-2.817s0.081-1.764.171-2.594a19.227,19.227,0,0,1,1.027-4.6,17.224,17.224,0,0,1,5.426-7.357c5.1-4.306,13.315-7.658,21.979-11.957,8.387-4.436,17.738-9.511,23.112-17.675,5.527-7.781,7.076-18.65,3.381-25.845-0.314-.112.671-0.116,2.385,0.011,0.861,0.062,1.921.154,3.126,0.259,0.6,0.053,1.239.108,1.9,0.162q0.5,0.042,1,.081l1.022,0.077c2.88,0.212,5.877.323,8.1,0.316s3.632-.084,3.522-0.073a6.287,6.287,0,0,1,1.263-1.134,0.972,0.972,0,0,1,.229-0.091,0.517,0.517,0,0,1,.2-0.01,0.549,0.549,0,0,1,.342.222c0.4,0.5.664,1.885,0.828,3.847a59.881,59.881,0,0,1-.963,15.537,44.794,44.794,0,0,1-16.021,26.265c-13.94,11.768-31.126,16.5-39.237,26.735h0Z" transform="translate(-250 -250)"/>
+      </g>
+      <g id="message">
+        <g transform="translate(-250 -250)" style="fill: #fff; filter: url(#filter-3)">
+          <path id="path" class="cls-4" d="M318.313,389.781H419.281a4,4,0,0,1,4,4v57.907a4,4,0,0,1-4,4H318.313a4,4,0,0,1-4-4V393.781A4,4,0,0,1,318.313,389.781Z" style="stroke: inherit; filter: none; fill: inherit"/>
+        </g>
+        <use transform="translate(-250 -250)" xlink:href="#path" style="stroke: #fff; filter: none; fill: none"/>
+        <g id="text-lines">
+          <path class="cls-5" d="M327.634,406.261v-6.278h82.325v6.278H327.634Z" transform="translate(-250 -250)"/>
+          <path id="Shape_1_copy_3" data-name="Shape 1 copy 3" class="cls-5" d="M327.634,440.785v-6.277h82.325v6.277H327.634Z" transform="translate(-250 -250)"/>
+          <path id="Shape_1_copy" data-name="Shape 1 copy" class="cls-5" d="M327.634,423.523v-6.277h66.644v6.277H327.634Z" transform="translate(-250 -250)"/>
+          <path id="Shape_1_copy_2" data-name="Shape 1 copy 2" class="cls-5" d="M400.55,423.523v-6.277h6.273v6.277H400.55Z" transform="translate(-250 -250)"/>
+        </g>
+      </g>
+      <g id="points" class="cls-2">
+        <circle id="Ellipse_1_copy" data-name="Ellipse 1 copy" class="cls-6" cx="165.844" cy="63.703" r="21.656"/>
+        <circle id="Ellipse_1_copy_2" data-name="Ellipse 1 copy 2" class="cls-6" cx="106.656" cy="63.703" r="21.656"/>
+      </g>
     </g>
+  </g>
 </svg>

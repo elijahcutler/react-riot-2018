@@ -39,7 +39,7 @@ exports.getTimeline = functions.https.onRequest((req, res) => {
       let promises = [];
       if (snapshot.numChildren() > 0) {
         snapshot.forEach(childSnapshot => {
-          let uid = childSnapshot.val();
+          let uid = childSnapshot.key;
           following.push(uid);
         });
         following.forEach(uid => {

@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import {Link} from "react-router-dom";
+import {
+  Link,
+  withRouter
+} from "react-router-dom";
 import firebase from 'firebase';
 
-export default class extends Component {
+class Navbar extends Component {
   state = {
     authenticated: false
   }
@@ -58,6 +61,14 @@ export default class extends Component {
                 Home
               </Link>
             </li>
+              <li className="nav-item">
+                <Link
+                  className="nav-link"
+                  to="/events"
+                >
+                  Global Events
+                </Link>
+              </li>
           </ul>
           <div className="my-2 my-lg-0">
               {this.state.authenticated === true
@@ -98,3 +109,5 @@ export default class extends Component {
     );
   }
 }
+
+export default withRouter(Navbar);
