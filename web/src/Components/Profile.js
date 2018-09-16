@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { withRouter } from "react-router-dom";
+import {withRouter} from "react-router-dom";
 import firebase from './firebase';
 
 class Profile extends Component {
@@ -29,52 +29,32 @@ class Profile extends Component {
 
   render() {
     return (
-      <div>
+      <div className="container">
         {this.state.user
           ?
-          <div>
-            <div className="media">
+          <div className="row">
+            <div className="col-4 mt-3">
               <img
-                className="mr-3"
                 src={this.state.user.photoURL}
                 alt="Profile Picture"
                 style={{
-                  width: '256px',
-                  height: '256px',
+                  width: '100%',
                   borderRadius: '58px',
                 }}
               />
-            <div className="media-body">
-              <h5 className="mt-0">{this.state.user.displayName}</h5>
-              <div>
-                <img
-                  src='https://bit.ly/1CCy7nP'
-                  alt="GitHub: "
-                  style={{
-                    width: '24px',
-                    height: '24px',
-                    borderRadius: '32px',
-                    float: 'left'
-                  }}
-                />
-                <p>{this.state.user.username}</p>
-              </div>
-              <div>
-                <img
-                  src='https://bit.ly/2Muw7nP'
-                  alt="Email: "
-                  style={{
-                    height: '24px',
-                    float: 'left'
-                  }}
-                />
-                <p>{this.state.user.email}</p>
+              <div className="m-2">
+                <h3>
+                  <a href={`https://github.com/${this.state.user.username}`}>
+                    {this.state.user.displayName || this.state.user.username}
+                  </a>
+                </h3>
+                {this.state.user.displayName &&
+                  <p>@{this.state.user.username}</p>
+                }
               </div>
             </div>
           </div>
-          </div>
-          :
-          <h1>Loading Profile</h1>
+          : <h1>Loading Profile</h1>
         }
       </div>
     );
