@@ -9,29 +9,38 @@ import firebase from './firebase';
 
 class Profile extends Component {
   state = {
-    canFollow: !!firebase.auth().currentUser,
+    canFollow: false,
     isFollowing: false,
     following: [],
-    user: null
+    user: null,
+    idToken: null
   }
 
   componentDidMount() {
-    this.loadProfileToView();
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        firebase.auth().currentUser.getIdToken(true).then(idToken => {
+          this.setState({
+            idToken
+          });
+          this.loadProfileToView(user);
+        }).catch(error => {
+          console.error('Unable to properly authenticate user:', error);
+          this.loadProfileToView(null);
+        });
+      } else {
+        this.setState({
+          idToken: null
+        });
+        this.loadProfileToView(null);
+      }
+    });
   }
 
-  loadProfileToView = () => {
+  loadProfileToView = user => {
     let uid = this.props.match.params.uid;
-    if (!uid) {
-      let user = firebase.auth().currentUser;
-      if (user) uid = user.uid;
-    }
-    if (firebase.auth().currentUser) {
-      if (firebase.auth().currentUser.uid === uid) {
-        this.setState({
-          canFollow: false
-        });
-      }
-    }
+    if (!uid && user) uid = user.uid;
+    if (user.uid !== uid) this.amIFollowing(uid);
     axios.get(`https://us-central1-gittogether-6f7ce.cloudfunctions.net/getProfile?uid=${uid}`).then(res => {
       this.setState({
         user: res.data
@@ -44,12 +53,26 @@ class Profile extends Component {
 
   loadFollowing = uid => {
     axios.get(`https://us-central1-gittogether-6f7ce.cloudfunctions.net/getFollowers?uid=${uid}`).then(res => {
-      console.log(res.data);
       this.setState({
         following: res.data
       });
     }).catch(error => {
       this.setState({ error });
+    });
+  }
+
+  amIFollowing = uid => {
+    axios.get(`https://us-central1-gittogether-6f7ce.cloudfunctions.net/amIFollowing?uid=${uid}`, {
+      headers: {
+        authorization: `Bearer ${this.state.idToken}`
+      }
+    }).then(res => {
+      this.setState({
+        canFollow: true,
+        isFollowing: res.data
+      });
+    }).catch(error => {
+      console.error(error);
     });
   }
 
@@ -89,28 +112,45 @@ class Profile extends Component {
   }
 
   follow = () => {
-    firebase.auth().currentUser.getIdToken(true).then(idToken => {
-      axios({
-        method: 'post',
-        url: 'https://us-central1-gittogether-6f7ce.cloudfunctions.net/followUser',
-        data: {
-          uid: this.state.user.uid,
-          following: true
-        },
-        headers: {
-          authorization: `Bearer ${idToken}`
-        }
-      }).then(res => {
-        console.log(res);
-      }).catch(error => {
-        // TODO: Inform user of this error
-        console.error(error);
+    axios({
+      method: 'post',
+      url: 'https://us-central1-gittogether-6f7ce.cloudfunctions.net/followUser',
+      data: {
+        uid: this.state.user.uid,
+        following: true
+      },
+      headers: {
+        authorization: `Bearer ${this.state.idToken}`
+      }
+    }).then(res => {
+      this.setState({
+        isFollowing: true
       });
+    }).catch(error => {
+      // TODO: Inform user of this error
+      console.error(error);
     });
   }
 
   unfollow = () => {
-
+    axios({
+      method: 'post',
+      url: 'https://us-central1-gittogether-6f7ce.cloudfunctions.net/followUser',
+      data: {
+        uid: this.state.user.uid,
+        following: false
+      },
+      headers: {
+        authorization: `Bearer ${this.state.idToken}`
+      }
+    }).then(res => {
+      this.setState({
+        isFollowing: false
+      });
+    }).catch(error => {
+      // TODO: Inform user of this error
+      console.error(error);
+    });
   }
 
   render() {
@@ -138,13 +178,25 @@ class Profile extends Component {
                   <p>@{this.state.user.username}</p>
                 }
                 {this.state.canFollow &&
-                  <button
-                    className="btn btn-primary btn-raised btn-block"
-                    onClick={this.follow}
-                  >
-                    Follow
-                  </button>
-                }
+                  <div>
+                    {this.state.isFollowing
+                      ?
+                        <button
+                          className="btn btn-secondary btn-raised btn-block"
+                          onClick={this.unfollow}
+                        >
+                          Unfollow
+                        </button>
+                      :
+                        <button
+                          className="btn btn-primary btn-raised btn-block"
+                          onClick={this.follow}
+                        >
+                          Follow
+                        </button>
+                    }
+                    </div>
+                  }
               </div>
             </div>
             <div

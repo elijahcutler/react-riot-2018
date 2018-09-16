@@ -18,11 +18,7 @@ export default class extends Component {
 
   fetchTimeline = (startAt = null) => {
     let query = `${startAt ? `?startAt=${startAt}` : ''}`;
-    axios.get(`https://us-central1-gittogether-6f7ce.cloudfunctions.net/getGlobalTimeline${query}`, {
-      headers: {
-        authorization: `Bearer ${this.state.idToken}`
-      }
-    }).then(res => {
+    axios.get(`https://us-central1-gittogether-6f7ce.cloudfunctions.net/getGlobalTimeline${query}`).then(res => {
       if (res.status === 200) {
         if (startAt) {
           res.data.shift();
