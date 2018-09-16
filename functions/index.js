@@ -78,7 +78,7 @@ exports.getTimeline = functions.https.onRequest((req, res) => {
           let eventPromises = [];
           userData.forEach(userData => {
             eventPromises.push(new Promise((resolve, reject) => {
-              admin.database().ref(`timeline`).orderByChild('uid').startAt(userData.uid).limitToLast(5).once('value', snapshot => {
+              admin.database().ref(`timeline`).orderByChild('uid').startAt(userData.uid).endAt(userData.uid).limitToLast(5).once('value', snapshot => {
                 if (snapshot.numChildren() > 0) {
                   snapshot.forEach(childSnapshot => {
                     events.push({
