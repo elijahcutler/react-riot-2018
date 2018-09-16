@@ -80,7 +80,7 @@ export default class extends Component {
                     <h2>Uh oh!</h2>
                     <p>Your timeline is empty. Check out the <Link
                       className="text-primary"
-                      to="/events"
+                      to="/activty"
                     >
                       global timeline
                     </Link> or start following others to get some posts!</p>
