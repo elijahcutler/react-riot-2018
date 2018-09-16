@@ -233,7 +233,6 @@ exports.addTimelineEvent = functions.https.onRequest((req, res) => {
   validateFirebaseIdToken(req, res, () => {
     if (req.method === 'POST') {
       if (req.body.body && req.body.body.length) {
-        console.log(req.body.body);
         let key = admin.database().ref('timeline').push().key;
         admin.database().ref(`timeline/${key}`).set({
           body: req.body.body,
@@ -249,4 +248,28 @@ exports.addTimelineEvent = functions.https.onRequest((req, res) => {
       res.status(405).send();
     }
   });
+});
+
+exports.getFollowers = functions.https.onRequest((req, res) => {
+  if(req.query.uid) {
+    getUserInformation(req.query.uid).then(user => {
+      admin.database().ref(`users/${user.uid}/following`).once('value', snapshot => {
+        let promises = [];
+        snapshot.forEach(childSnapshot => {
+          promises.push(getUserInformation(childSnapshot.key));
+        });
+        Promise.all(promises).then(following => {
+          return res.status(200).json(following);
+        }).catch(error => {
+          console.error(`Error fetching followers for ${req.query.uid}:`, error);
+          res.status(500).send();
+        });
+      });
+    }).catch(error => {
+      console.error(`Error fetching followers for ${req.query.uid}:`, error);
+      res.status(500).send();
+    });
+  } else {
+    res.status(400).send();
+  }
 });
