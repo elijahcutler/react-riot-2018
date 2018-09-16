@@ -32,7 +32,15 @@ export default class extends Component {
               <div className="col-12 col-md-6 px-4 px-md-0 col-text white-text">
                 <h1 className="big">You brought the<br/>code, right?</h1>
                 <p className="large">
-                  <strong>Join now</strong>
+                  <strong>
+                    <a href="/login">
+                      Join now
+                    </a>
+                  </strong> or <strong>
+                    <a href="https://www.reactriot.com/entries/176--1/vote" target="_blank">
+                      vote for us
+                    </a>
+                  </strong>
                   {" - you won't regret it."}
                 </p>
               </div>
@@ -54,9 +62,12 @@ export default class extends Component {
                       </p>
                   </div>
                   <div className="register-button centered-button">
-                    <a href="/login" className="btn btn-secondary btn-lg active"
+                    <a
+                      href="/login"
+                      className="btn btn-secondary btn-lg active"
                       role="button"
-                      aria-pressed="true">
+                      aria-pressed="true"
+                    >
                       {"Let's Go"}
                     </a>
                   </div>
