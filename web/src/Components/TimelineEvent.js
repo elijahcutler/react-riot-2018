@@ -220,7 +220,7 @@ export default class extends Component {
           authorization: `Bearer ${this.props.idToken}`
         }
       }).then(res => {
-        alert('Report submitted. This event will be reviwed!');
+        alert('Report submitted.');
       }).catch(error => {
         console.error(error);
         alert('Unable to submit report!');
@@ -233,7 +233,7 @@ export default class extends Component {
           id: this.props.id
         }
       }).then(res => {
-        alert('Report submitted. This event will be reviwed!');
+        alert('Report submitted.');
       }).catch(error => {
         console.error(error);
         alert('Unable to submit report!');

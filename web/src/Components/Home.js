@@ -71,7 +71,10 @@ export default class extends Component {
         authorization: `Bearer ${this.state.idToken}`
       }
     }).then(res => {
+      let newEvents = this.state.events;
+      newEvents.unshift(res.data);
       this.setState({
+        events: newEvents,
         messageBody: ''
       });
       console.log(res);
