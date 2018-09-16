@@ -45,7 +45,7 @@ exports.getTimeline = functions.https.onRequest((req, res) => {
         following.forEach(uid => {
           promises.push(new Promise((resolve, reject) => {
             admin.auth().getUser(uid).then(userRecord => {
-              return admin.database().ref('events').orderByChild('user').startAt(uid).endAt(uid).startAt(0).limitToFirst(5).then('value', snapshot => {
+              return admin.database().ref('events').orderByChild('user').startAt(uid).endAt(uid).startAt(0).limitToFirst(5).once('value', snapshot => {
                 events.push({
                   body: snapshot.child('body').val(),
                   time: snapshot.child('time').val(),
@@ -127,5 +127,73 @@ exports.setUsername = functions.https.onRequest((req, res) => {
     } else {
       res.status(405).send();
     }
+  });
+});
+
+exports.userCreatedTimelineEvent = functions.auth.user().onCreate(user => {
+  let key = admin.database().ref('timeline').push().key;
+  return admin.database().ref(`timeline/${key}`).set({
+    body: '',
+    time: new Date().getTime(),
+    title: 'Created their account!',
+    uid: user.uid
+  });
+});
+
+exports.getGlobalTimeline = functions.https.onRequest((req, res) => {
+  cors(req, res, () => {
+    admin.database().ref('timeline').limitToLast(25).once('value', snapshot => {
+      let events = [];
+      let promises = [];
+      snapshot.forEach(childSnapshot => {
+        promises.push(new Promise((resolve, reject) => {
+          admin.database().ref(`users/${childSnapshot.child('uid').val()}/username`).once('value', childChildSnapshot => {
+            if (childChildSnapshot.exists()) {
+              resolve({
+                uid: childSnapshot.child('uid').val(),
+                username: childChildSnapshot.val()
+              });
+            } else {
+              resolve();
+            }
+          })
+        }));
+        promises.push(new Promise((resolve, reject) => {
+          admin.auth().getUser(childSnapshot.child('uid').val())
+            .then(userRecord => resolve({
+              uid: userRecord.uid,
+              displayName: userRecord.displayName || null,
+              photoURL: userRecord.photoURL
+            }))
+            .catch(error => {
+              reject(error);
+            })
+        }));
+        events.push({
+          body: childSnapshot.child('body').val(),
+          time: childSnapshot.child('time').val(),
+          title: childSnapshot.child('title').val(),
+          uid: childSnapshot.child('uid').val()
+        });
+      });
+      Promise.all(promises).then(userData => {
+        let users = [];
+        userData.forEach(data => {
+          for (let key in data) {
+            if (!users[data.uid]) users[data.uid] = {};
+            users[data.uid][key] = data[key];
+          }
+        });
+        events.forEach(event => {
+          event.username = users[event.uid].displayName || users[event.uid].username;
+          event.photoURL = users[event.uid].photoURL;
+        });
+        let sortedEvents = events.sort((a, b) => b.time - a.time);
+        return res.status(200).send(sortedEvents);
+      }).catch(error => {
+        console.error('Unable to load global timeline:', error);
+        res.status(500).send();
+      });
+    });
   });
 });
