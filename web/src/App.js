@@ -7,6 +7,7 @@ import Navbar from './Components/Navbar';
 import Home from './Components/Home';
 import Login from './Components/Login';
 import Profile from './Components/Profile';
+import Events from './Components/Events';
 import {PublicRoute, PrivateRoute} from './Components/Routes';
 
 class App extends Component {
@@ -38,6 +39,11 @@ class App extends Component {
                 path="/profile/:uid"
                 component={props => <Profile />}
             />
+              <PublicRoute
+                  exact
+                  path="/events"
+                  component={props => <Events />}
+              />
           </Switch>
         </div>
       </Router>

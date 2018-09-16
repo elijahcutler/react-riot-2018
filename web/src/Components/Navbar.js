@@ -61,6 +61,14 @@ class Navbar extends Component {
                 Home
               </Link>
             </li>
+              <li className="nav-item">
+                <Link
+                  className="nav-link"
+                  to="/events"
+                >
+                  Global Events
+                </Link>
+              </li>
           </ul>
           <div className="my-2 my-lg-0">
               {this.state.authenticated === true

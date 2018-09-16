@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import firebase from './firebase';
-import {Timeline} from 'react-event-timeline'
+import Timeline from './Timeline';
 import TimelineEvent from './TimelineEvent';
 
 export default class extends Component {
@@ -51,23 +51,18 @@ export default class extends Component {
   render() {
     return (
       <div>
-        {this.state.authenticated === true
+        {this.state.authenticated
           ?
-          <div className="row">
-            <div className="col-7">
-              <Timeline>
-                <TimelineEvent
-                  title='Testing'
-                  body='Testing'
-                  date={new Date().getTime()}
-                  username='Testing'
-                  photoURL='http://4.bp.blogspot.com/_Mk4QNmA2vYQ/TF_rSmYQC0I/AAAAAAAAAnU/DP6appPWOrQ/s1600/patata.jpg'
-                />
-              </Timeline>
-            </div>
+          <div>
+            {this.state.authenticated === true
+              ?
+                <div className="container">
+                  <Timeline events={this.state.events} global={false} />
+                </div>
+              : <h1>You need to login to see the home page...</h1>
+            }
           </div>
-          :
-          <h1>You need to login to see the home page...</h1>
+          : <div />
         }
       </div>
     );
