@@ -373,3 +373,24 @@ exports.amIFollowing = functions.https.onRequest((req, res) => {
     }
   });
 });
+
+exports.deleteEvent = functions.https.onRequest((req, res) => {
+  validateFirebaseIdToken(req, res, () => {
+    if (req.method === 'POST') {
+      if (req.body.id) {
+        admin.database().ref(`timeline/${req.body.id}/uid`).once('value', snapshot => {
+          if (req.user.uid === snapshot.val()) {
+            admin.database().ref(`timeline/${req.body.id}`).remove();
+            res.status(200).send();
+          } else {
+            res.status(401).send();
+          }
+        });
+      } else {
+        res.status(400).send();
+      }
+    } else {
+      res.status(405).send();
+    }
+  });
+});
