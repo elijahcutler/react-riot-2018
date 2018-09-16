@@ -45,7 +45,7 @@ class Profile extends Component {
               <div className="m-2">
                 <h3>
                   <a href={`https://github.com/${this.state.user.username}`}>
-                    {this.state.user.displayName || this.state.user.username}
+                    {this.state.user.displayName || `@${this.state.user.username}`}
                   </a>
                 </h3>
                 {this.state.user.displayName &&
