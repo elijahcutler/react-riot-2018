@@ -56,8 +56,8 @@ class Login extends Component {
             </button>
             <br />
             <div className="info">
-              <p>{"Don't have a GitHub account?"}</p>
-              <p>
+              <p className="login-p">{"Don't have a GitHub account?"}</p>
+              <p className="login-p">
                 {"You can create one "}<a href="https://github.com/join"
                   target="_blank">here</a>.
               </p>
